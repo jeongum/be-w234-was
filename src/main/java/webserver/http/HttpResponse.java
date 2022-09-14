@@ -13,20 +13,12 @@ public class HttpResponse extends HttpBase{
     private byte[] body;
 
 
-    public HttpResponse(HttpRequest request) {
-        this.body = generateBody(request);
+    public HttpResponse(byte[] body) {
+        this.status = HttpStatusCode.OK;
+        this.body = body;
         this.header = generateHeader(body.length);
     }
 
-    private byte[] generateBody(HttpRequest request) {
-        try {
-            this.status = HttpStatusCode.OK;
-            return Files.readAllBytes(new File("./webapp" + request.getPath()).toPath());
-        } catch (IOException e) {
-            this.status = HttpStatusCode.NOT_FOUND;
-            return "Hello World".getBytes();
-        }
-    }
 
     private String generateHeader(int lengthOfBodyContent) {
         StringBuffer sb = new StringBuffer();
