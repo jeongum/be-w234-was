@@ -7,6 +7,11 @@ public class HttpRequest extends HttpBase{
     private HttpMethod method;
     private String path;
 
+    public HttpRequest(HttpMethod method, String path) {
+        this.method = method;
+        this.path = path;
+    }
+
     public HttpRequest(BufferedReader br) {
         try {
             String[] infos = br.readLine().split(" ");

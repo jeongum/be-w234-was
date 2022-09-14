@@ -12,6 +12,17 @@ public class HttpResponse extends HttpBase{
     private String header;
     private byte[] body;
 
+    public HttpStatusCode getStatus() {
+        return status;
+    }
+
+    public String getHeader() {
+        return header;
+    }
+
+    public byte[] getBody() {
+        return body;
+    }
 
     public HttpResponse(byte[] body) {
         this.status = HttpStatusCode.OK;

@@ -1,18 +1,19 @@
 package webserver;
 
-import java.io.*;
-import java.net.Socket;
-import java.nio.file.Files;
-
+import controller.HomeController;
 import controller.UserController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webserver.http.HttpRequest;
 import webserver.http.HttpResponse;
-import webserver.http.HttpStatusCode;
+
+import java.io.*;
+import java.net.Socket;
+import java.nio.file.Files;
 
 public class RequestHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
+    private static final HomeController homeController = new HomeController();
     private static final UserController userController = new UserController();
 
     private Socket connection;
@@ -30,22 +31,12 @@ public class RequestHandler implements Runnable {
             if (request.getPath().contains("/user/create")) {
                 response = userController.create(request);
             } else if (request.getPath().contains("/index") || request.getPath().contains("/user/form")) {
-                response = responseFile(request);
+                response = homeController.responseFile(request);
             }
             response.generateResponse(out);
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
-    }
-
-    private HttpResponse responseFile(HttpRequest request) {
-        byte[] body;
-        try {
-            body = Files.readAllBytes(new File("./webapp" + request.getPath()).toPath());
-        } catch (IOException e) {
-            body = "Hello World".getBytes();
-        }
-        return new HttpResponse(body);
     }
 
 }
