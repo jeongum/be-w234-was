@@ -12,20 +12,15 @@ public class FileHandler implements Handler {
 
     @Override
     public HttpResponse handle(HttpRequest request) {
-        return responseFile(request);
+        byte[] body = getContents(request.getPath());
+        return new HttpResponse(HttpStatusCode.OK, request.getContentType(), body);
     }
 
-    public HttpResponse responseFile(HttpRequest request) {
+    public byte[] getContents(String path) {
         try {
-            byte[] body = getFileContents(request.getPath());
-            return new HttpResponse(HttpStatusCode.OK, request.getContentType(), body);
+            return Files.readAllBytes(new File("./webapp" + path).toPath());
         } catch (IOException e) {
-            return new HttpResponse("Hello World".getBytes());
+            return "Hello World".getBytes();
         }
     }
-
-    public byte[] getFileContents(String path) throws IOException {
-        return Files.readAllBytes(new File("./webapp" + path).toPath());
-    }
-
 }
