@@ -40,15 +40,4 @@ public class HttpResponse extends HttpBase {
 
         return sb.toString();
     }
-
-    public void generateResponse(OutputStream out) {
-        try {
-            DataOutputStream dos = new DataOutputStream(out);
-            dos.writeBytes(header);
-            dos.write(body, 0, body.length);
-            dos.flush();
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
-    }
 }

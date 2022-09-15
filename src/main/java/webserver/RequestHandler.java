@@ -26,10 +26,16 @@ public class RequestHandler implements Runnable {
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
             HttpRequest request = new HttpRequest(new BufferedReader(new InputStreamReader(in, "UTF-8")));
             HttpResponse response = mapper.handlerMapping(request.getPath()).handle(request);
-            response.generateResponse(out);
+            sendHttpResponse(out, response);
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
     }
 
+    private void sendHttpResponse(OutputStream out, HttpResponse response) throws IOException {
+        DataOutputStream dos = new DataOutputStream(out);
+        dos.writeBytes(response.getHeader());
+        dos.write(response.getBody());
+        dos.flush();
+    }
 }
