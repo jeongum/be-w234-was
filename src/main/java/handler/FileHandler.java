@@ -1,26 +1,33 @@
 package handler;
 
+import webserver.http.ContentType;
+import webserver.http.request.Connection;
 import webserver.http.request.HttpRequest;
 import webserver.http.response.HttpResponse;
+import webserver.http.response.HttpStatusCode;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class FileHandler implements Handler{
+public class FileHandler implements Handler {
 
     @Override
-    public HttpResponse handle(HttpRequest request){
+    public HttpResponse handle(HttpRequest request) {
         return responseFile(request);
     }
+
     public HttpResponse responseFile(HttpRequest request) {
-        byte[] body;
         try {
-            body = Files.readAllBytes(new File("./webapp" + request.getPath()).toPath());
+            byte[] body = getFileContents(request.getPath());
+            return new HttpResponse(HttpStatusCode.OK, request.getContentType(), body);
         } catch (IOException e) {
-            body = "Hello World".getBytes();
+            return new HttpResponse(HttpStatusCode.NOT_FOUND, ContentType.HTML, "Hello World".getBytes());
         }
-        return new HttpResponse(body);
+    }
+
+    public byte[] getFileContents(String path) throws IOException {
+        return Files.readAllBytes(new File("./webapp" + path).toPath());
     }
 
 }

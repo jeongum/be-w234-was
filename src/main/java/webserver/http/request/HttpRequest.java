@@ -1,5 +1,6 @@
 package webserver.http.request;
 
+import webserver.http.ContentType;
 import webserver.http.HttpBase;
 
 import java.io.BufferedReader;
@@ -9,6 +10,7 @@ public class HttpRequest extends HttpBase {
     private HttpMethod method;
     private String path;
     private String query;
+    private ContentType contentType;
     private String host;
     private String accept;
     private Connection connection;
@@ -29,16 +31,15 @@ public class HttpRequest extends HttpBase {
             this.method = HttpMethod.valueOf(firstLine[0]);
             this.path = generatePath(firstLine[1]);
             this.query = generateQuery(firstLine[1]);
-            this.host = getNextInfo(br)[1];
-            this.accept = getNextInfo(br)[1];
-            this.connection = generateConnection(getNextInfo(br)[1]);
+            this.contentType = generateContentType(path);
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
     }
 
-    private Connection generateConnection(String connection) {
-        return connection.equals("keep-alive") ? Connection.KEEP_ALIVE : Connection.CLOSE;
+    private ContentType generateContentType(String path) {
+        if (path.endsWith(".css")) return ContentType.CSS;
+        return ContentType.HTML;
     }
 
     private String generateQuery(String url) {
@@ -66,15 +67,8 @@ public class HttpRequest extends HttpBase {
         return query;
     }
 
-    public String getHost() {
-        return host;
+    public ContentType getContentType() {
+        return contentType;
     }
 
-    public String getAccept() {
-        return accept;
-    }
-
-    public Connection getConnection() {
-        return connection;
-    }
 }

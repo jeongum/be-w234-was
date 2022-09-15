@@ -1,6 +1,7 @@
 package webserver;
 
 import handler.FileHandler;
+import handler.Handler;
 import handler.UserHandler;
 import handler.mapper.HandlerMapper;
 import org.slf4j.Logger;
