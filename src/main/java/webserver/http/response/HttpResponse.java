@@ -1,9 +1,14 @@
 package webserver.http.response;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import webserver.http.ContentType;
-import webserver.http.HttpBase;
 
-public class HttpResponse extends HttpBase {
+@Slf4j
+@Getter
+@NoArgsConstructor
+public class HttpResponse {
 
     private HttpStatusCode status;
     private ContentType contentType;
@@ -33,17 +38,4 @@ public class HttpResponse extends HttpBase {
         sb.append("\r\n");
         return sb.toString();
     }
-
-    public HttpStatusCode getStatus() {
-        return status;
-    }
-
-    public String getHeader() {
-        return header;
-    }
-
-    public byte[] getBody() {
-        return body;
-    }
-
 }

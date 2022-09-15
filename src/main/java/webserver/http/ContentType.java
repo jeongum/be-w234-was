@@ -1,7 +1,5 @@
 package webserver.http;
 
-import org.checkerframework.checker.units.qual.C;
-
 public enum ContentType {
     CSS("text/css"), HTML("text/html");
 
