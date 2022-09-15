@@ -1,5 +1,6 @@
-package handler;
+package handler.file;
 
+import handler.Handler;
 import webserver.http.request.HttpRequest;
 import webserver.http.response.HttpResponse;
 import webserver.http.response.HttpStatusCode;
@@ -13,6 +14,7 @@ public class FileHandler implements Handler {
     @Override
     public HttpResponse handle(HttpRequest request) {
         byte[] body = getContents(request.getPath());
+
         return new HttpResponse(HttpStatusCode.OK, request.getContentType(), body);
     }
 

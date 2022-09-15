@@ -1,7 +1,6 @@
-package handler.mapper;
+package handler;
 
-import handler.FileHandler;
-import handler.Handler;
+import handler.file.FileHandler;
 import handler.user.UserCreateHandler;
 import java.io.File;
 import java.util.HashMap;

@@ -1,5 +1,6 @@
-package handler;
+package handler.file;
 
+import handler.file.FileHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
