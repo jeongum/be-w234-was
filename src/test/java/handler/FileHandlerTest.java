@@ -1,22 +1,17 @@
-package controller;
+package handler;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import webserver.http.HttpMethod;
-import webserver.http.HttpRequest;
-import webserver.http.HttpResponse;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import webserver.http.request.HttpMethod;
+import webserver.http.request.HttpRequest;
+import webserver.http.response.HttpResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class HomeControllerTest {
+class FileHandlerTest {
 
 
-    private HomeController homeController = new HomeController();
+    private FileHandler fileHandler = new FileHandler();
 
     @Test
     @DisplayName("webapp에 있는 파일을 읽어 response를 만든다.")
@@ -25,7 +20,7 @@ class HomeControllerTest {
         HttpRequest request = new HttpRequest(HttpMethod.GET, "/index.html");
 
         // when
-        HttpResponse response = homeController.responseFile(request);
+        HttpResponse response = fileHandler.responseFile(request);
 
         // then
         String body = new String(response.getBody());
@@ -39,7 +34,7 @@ class HomeControllerTest {
         HttpRequest request = new HttpRequest(HttpMethod.GET, "/test.html");
 
         // when
-        HttpResponse response = homeController.responseFile(request);
+        HttpResponse response = fileHandler.responseFile(request);
 
         // then
         String body = new String(response.getBody());

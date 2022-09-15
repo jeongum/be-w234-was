@@ -5,5 +5,5 @@ import org.slf4j.LoggerFactory;
 import webserver.RequestHandler;
 
 public class HttpBase {
-    static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
+    public static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
 }

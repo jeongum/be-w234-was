@@ -1,21 +1,19 @@
 package webserver;
 
-import controller.HomeController;
-import controller.UserController;
+import handler.FileHandler;
+import handler.UserHandler;
+import handler.mapper.HandlerMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import webserver.http.HttpRequest;
-import webserver.http.HttpResponse;
+import webserver.http.request.HttpRequest;
+import webserver.http.response.HttpResponse;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
 
 public class RequestHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
-    private static final HomeController homeController = new HomeController();
-    private static final UserController userController = new UserController();
-
+    private static final HandlerMapper mapper = new HandlerMapper();
     private Socket connection;
 
     public RequestHandler(Socket connectionSocket) {
@@ -27,12 +25,7 @@ public class RequestHandler implements Runnable {
 
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
             HttpRequest request = new HttpRequest(new BufferedReader(new InputStreamReader(in, "UTF-8")));
-            HttpResponse response = null;
-            if (request.getPath().contains("/user/create")) {
-                response = userController.create(request);
-            } else if (request.getPath().contains("/index") || request.getPath().contains("/user/form")) {
-                response = homeController.responseFile(request);
-            }
+            HttpResponse response = mapper.handlerMapping(request.getPath()).handle(request);
             response.generateResponse(out);
         } catch (IOException e) {
             logger.error(e.getMessage());

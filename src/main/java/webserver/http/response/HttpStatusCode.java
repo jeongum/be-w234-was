@@ -1,4 +1,4 @@
-package webserver.http;
+package webserver.http.response;
 
 public enum HttpStatusCode {
     OK(200), NOT_FOUND(404);

@@ -1,12 +1,12 @@
-package webserver.http;
+package webserver.http.response;
+
+import webserver.http.HttpBase;
 
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Files;
 
-public class HttpResponse extends HttpBase{
+public class HttpResponse extends HttpBase {
 
     private HttpStatusCode status;
     private String header;
@@ -47,7 +47,7 @@ public class HttpResponse extends HttpBase{
             dos.writeBytes(header);
             dos.write(body, 0, body.length);
             dos.flush();
-        } catch (IOException e){
+        } catch (IOException e) {
             logger.error(e.getMessage());
         }
     }
