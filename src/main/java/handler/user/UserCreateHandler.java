@@ -19,7 +19,7 @@ public class UserCreateHandler implements Handler {
         return new HttpResponse(user.getUserId().getBytes());
     }
 
-    private User createUser(Map<String, String> params) {
+    public User createUser(Map<String, String> params) {
         User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
         return user;
     }
