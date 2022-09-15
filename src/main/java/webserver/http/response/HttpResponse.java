@@ -10,18 +10,6 @@ public class HttpResponse extends HttpBase {
     private String header;
     private byte[] body;
 
-    public HttpStatusCode getStatus() {
-        return status;
-    }
-
-    public String getHeader() {
-        return header;
-    }
-
-    public byte[] getBody() {
-        return body;
-    }
-
     public HttpResponse(byte[] body) {
         this.status = HttpStatusCode.OK;
         this.contentType = ContentType.HTML;
@@ -45,4 +33,17 @@ public class HttpResponse extends HttpBase {
         sb.append("\r\n");
         return sb.toString();
     }
+
+    public HttpStatusCode getStatus() {
+        return status;
+    }
+
+    public String getHeader() {
+        return header;
+    }
+
+    public byte[] getBody() {
+        return body;
+    }
+
 }

@@ -2,9 +2,7 @@ package handler.mapper;
 
 import handler.FileHandler;
 import handler.Handler;
-import handler.UserHandler;
-import webserver.http.request.HttpRequest;
-
+import handler.user.UserCreateHandler;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +11,8 @@ public class HandlerMapper {
     Map<String, Handler> handlerMap = new HashMap<>();
 
     public HandlerMapper() {
-        handlerMap.put("file handler", new FileHandler());
-        handlerMap.put("/user/create", new UserHandler());
+        handlerMap.put("file handler", new FileHandler()); // 정적 파일
+        handlerMap.put("/user/create", new UserCreateHandler()); // 회원 가입
     }
 
     public Handler handlerMapping(String path){

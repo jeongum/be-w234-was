@@ -15,19 +15,13 @@ public class HttpRequest extends HttpBase {
     private String accept;
     private Connection connection;
 
-    public HttpRequest(HttpMethod method, String path) {
-        this.method = method;
-        this.path = path;
-    }
-
-
     public HttpRequest(BufferedReader br) {
         readHeader(br);
     }
 
     private void readHeader(BufferedReader br) {
         try {
-            String[] firstLine = getNextInfo(br);
+            String[] firstLine = br.readLine().split(" ");
             this.method = HttpMethod.valueOf(firstLine[0]);
             this.path = generatePath(firstLine[1]);
             this.query = generateQuery(firstLine[1]);
@@ -49,14 +43,6 @@ public class HttpRequest extends HttpBase {
 
     private String generatePath(String url) {
         return url.split("\\?")[0];
-    }
-
-    private String[] getNextInfo(BufferedReader br) throws IOException {
-        return br.readLine().split(" ");
-    }
-
-    public HttpMethod getMethod() {
-        return method;
     }
 
     public String getPath() {

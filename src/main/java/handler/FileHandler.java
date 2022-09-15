@@ -1,7 +1,5 @@
 package handler;
 
-import webserver.http.ContentType;
-import webserver.http.request.Connection;
 import webserver.http.request.HttpRequest;
 import webserver.http.response.HttpResponse;
 import webserver.http.response.HttpStatusCode;
@@ -22,7 +20,7 @@ public class FileHandler implements Handler {
             byte[] body = getFileContents(request.getPath());
             return new HttpResponse(HttpStatusCode.OK, request.getContentType(), body);
         } catch (IOException e) {
-            return new HttpResponse(HttpStatusCode.NOT_FOUND, ContentType.HTML, "Hello World".getBytes());
+            return new HttpResponse("Hello World".getBytes());
         }
     }
 

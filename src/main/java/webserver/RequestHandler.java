@@ -1,8 +1,6 @@
 package webserver;
 
-import handler.FileHandler;
 import handler.Handler;
-import handler.UserHandler;
 import handler.mapper.HandlerMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +24,10 @@ public class RequestHandler implements Runnable {
 
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
             HttpRequest request = new HttpRequest(new BufferedReader(new InputStreamReader(in, "UTF-8")));
-            HttpResponse response = mapper.handlerMapping(request.getPath()).handle(request);
+
+            Handler handler = mapper.handlerMapping(request.getPath());
+            HttpResponse response = handler.handle(request);
+
             sendHttpResponse(out, response);
         } catch (IOException e) {
             logger.error(e.getMessage());
