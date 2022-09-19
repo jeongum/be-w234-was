@@ -35,6 +35,6 @@ class FileHandlerTest {
 
         // then
         String contentString = new String(contents);
-        assertTrue(contentString.contains("Hello World"));
+        assertTrue(contentString.equals("Hello World"));
     }
 }

@@ -30,11 +30,11 @@ public class HttpResponse {
     }
 
 
-    private String generateHeader(int lengthOfBodyContent) {
+    private String generateHeader(int contentLength) {
         StringBuffer sb = new StringBuffer();
         sb.append("HTTP/1.1 " + status.getStatusCode() + " " + status + " \r\n");
         sb.append("Content-Type: "+ contentType.getMIME() +";charset=utf-8\r\n");
-        sb.append("Content-Length: " + lengthOfBodyContent + "\r\n");
+        sb.append("Content-Length: " + contentLength + "\r\n");
         sb.append("\r\n");
         return sb.toString();
     }
