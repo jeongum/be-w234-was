@@ -19,6 +19,7 @@ public class UserCreateHandler implements Handler {
         return new HttpResponse(request.getHeader().get("Host"), "/index.html");
     }
 
+    // TODO("error 처리")
     public User createUser(Map<String, String> params) {
         if (!params.containsKey("userId")) throw new InvalidParameterException("userId가 없습니다.");
         if (!params.containsKey("password")) throw new InvalidParameterException("password가 없습니다.");

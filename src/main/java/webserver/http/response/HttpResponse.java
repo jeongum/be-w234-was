@@ -20,8 +20,8 @@ public class HttpResponse {
 
     public HttpResponse(MIME mime, byte[] body) {
         this.status = HttpStatusCode.OK;
-        this.body = body;
         this.header.put("mime", mime.getMIME());
+        this.body = body;
     }
 
     public HttpResponse(String host, String location) {
@@ -31,16 +31,16 @@ public class HttpResponse {
 
     public byte[] getHeaderByte() {
         StringBuffer sb = new StringBuffer();
-        sb.append("HTTP/1.1 " + status.getStatusCode() + " " + status + " \r\n");
 
+        // TODO("if-else 줄이기")
+        sb.append("HTTP/1.1 " + status.getStatusCode() + " " + status + " \r\n");
         if (status == HttpStatusCode.OK) {
             sb.append("Content-Type: " + header.get("mime") + ";charset=utf-8\r\n");
             sb.append("Content-Length: " + body.length + "\r\n");
-            sb.append("\r\n");
         } else if (status == HttpStatusCode.FOUND) {
-            String location = header.containsKey("location") ? header.get("location") : "index.html";
-            sb.append("Location: " + location);
+            sb.append("Location: " + header.get("location"));
         }
+        sb.append("\r\n");
 
         return sb.toString().getBytes();
     }

@@ -18,6 +18,7 @@ public class FileHandler implements Handler {
         return new HttpResponse(request.getMime(), body);
     }
 
+    // TODO("error 처리")
     public byte[] getContents(String path) {
         try {
             return Files.readAllBytes(new File("./webapp" + path).toPath());
