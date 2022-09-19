@@ -7,6 +7,7 @@ import webserver.http.MIME;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Map;
 
 @Slf4j
 @Getter
@@ -14,40 +15,17 @@ import java.io.IOException;
 public class HttpRequest {
     private HttpMethod method;
     private String path;
-    private String query;
     private MIME mime;
-    private String host;
-    private String accept;
-    private Connection connection;
+    private Map<String, String> header;
+    private Map<String, String> body;
+    private Map<String, String> parameter;
 
-    public HttpRequest(BufferedReader br) {
-        readHeader(br);
-    }
-
-    private void readHeader(BufferedReader br) {
-        try {
-            String[] firstLine = br.readLine().split(" ");
-            this.method = HttpMethod.valueOf(firstLine[0]);
-            this.path = generatePath(firstLine[1]);
-            this.query = generateQuery(firstLine[1]);
-            this.mime = generateContentType(path);
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-    }
-
-    private MIME generateContentType(String path) {
-        if (path.endsWith(".css")) return mime.CSS;
-        return mime.HTML;
-    }
-
-    private String generateQuery(String url) {
-        String[] query = url.split("\\?");
-        if (query.length == 1) return null;
-        return query[1];
-    }
-
-    private String generatePath(String url) {
-        return url.split("\\?")[0];
+    public HttpRequest(HttpMethod method, String path, MIME mime, Map<String, String> header, Map<String, String> body, Map<String, String> parameter) {
+        this.method = method;
+        this.path = path;
+        this.mime = mime;
+        this.header = header;
+        this.body = body;
+        this.parameter = parameter;
     }
 }

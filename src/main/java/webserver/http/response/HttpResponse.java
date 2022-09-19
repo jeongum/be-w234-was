@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import webserver.http.MIME;
+import webserver.http.request.HttpMethod;
+
+import java.util.Map;
 
 @Slf4j
 @Getter
@@ -28,7 +31,6 @@ public class HttpResponse {
         this.body = body;
         this.header = generateHeader(body.length);
     }
-
 
     private String generateHeader(int contentLength) {
         StringBuffer sb = new StringBuffer();

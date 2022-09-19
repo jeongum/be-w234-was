@@ -13,8 +13,7 @@ public class UserCreateHandler implements Handler {
 
     @Override
     public HttpResponse handle(HttpRequest request) {
-        Map<String, String> params = HttpRequestUtils.parseQueryString(request.getQuery());
-        User user = createUser(params);
+        User user = createUser(request.getParameter());
 
         return new HttpResponse(user.getUserId().getBytes());
     }
