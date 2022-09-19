@@ -1,11 +1,11 @@
 package webserver.http;
 
-public enum ContentType {
+public enum MIME {
     CSS("text/css"), HTML("text/html");
 
     private final String mime;
 
-    ContentType(String mime) {
+    MIME(String mime) {
         this.mime = mime;
     }
 

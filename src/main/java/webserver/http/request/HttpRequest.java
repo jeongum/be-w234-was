@@ -3,7 +3,7 @@ package webserver.http.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import webserver.http.ContentType;
+import webserver.http.MIME;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +15,7 @@ public class HttpRequest {
     private HttpMethod method;
     private String path;
     private String query;
-    private ContentType contentType;
+    private MIME mime;
     private String host;
     private String accept;
     private Connection connection;
@@ -30,15 +30,15 @@ public class HttpRequest {
             this.method = HttpMethod.valueOf(firstLine[0]);
             this.path = generatePath(firstLine[1]);
             this.query = generateQuery(firstLine[1]);
-            this.contentType = generateContentType(path);
+            this.mime = generateContentType(path);
         } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
 
-    private ContentType generateContentType(String path) {
-        if (path.endsWith(".css")) return ContentType.CSS;
-        return ContentType.HTML;
+    private MIME generateContentType(String path) {
+        if (path.endsWith(".css")) return mime.CSS;
+        return mime.HTML;
     }
 
     private String generateQuery(String url) {
