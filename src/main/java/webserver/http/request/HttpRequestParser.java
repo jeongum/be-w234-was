@@ -26,8 +26,7 @@ public class HttpRequestParser {
         method = HttpMethod.valueOf(infos[0]);
         String[] url = infos[1].split("\\?");
         path = url[0];
-        parameter = new HashMap<>();
-        if (path.length() > 1) {
+        if (url.length > 1) {
             parameter = HttpRequestUtils.parseQueryString(url[1]);
         }
         mime = generateMIME(path);
