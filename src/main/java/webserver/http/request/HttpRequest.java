@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import webserver.http.ContentType;
-import webserver.http.HttpBase;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,7 +43,8 @@ public class HttpRequest {
 
     private String generateQuery(String url) {
         String[] query = url.split("\\?");
-        return query.length == 1 ? null : query[1];
+        if (query.length == 1) return null;
+        return query[1];
     }
 
     private String generatePath(String url) {
