@@ -5,6 +5,7 @@ import model.User;
 import util.HttpRequestUtils;
 import webserver.http.request.HttpRequest;
 import webserver.http.response.HttpResponse;
+import webserver.http.response.HttpStatusCode;
 
 import java.security.InvalidParameterException;
 import java.util.Map;
@@ -13,9 +14,9 @@ public class UserCreateHandler implements Handler {
 
     @Override
     public HttpResponse handle(HttpRequest request) {
-        User user = createUser(request.getBody());
+        createUser(request.getBody());
 
-        return new HttpResponse(user.getUserId().getBytes());
+        return new HttpResponse(request.getHeader().get("Host"), "/index.html");
     }
 
     public User createUser(Map<String, String> params) {

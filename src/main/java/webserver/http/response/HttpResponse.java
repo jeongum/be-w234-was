@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import webserver.http.MIME;
 import webserver.http.request.HttpMethod;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -14,30 +15,33 @@ import java.util.Map;
 public class HttpResponse {
 
     private HttpStatusCode status;
-    private MIME mime;
-    private String header;
-    private byte[] body;
+    private Map<String, String> header = new HashMap<>();
+    private byte[] body = new byte[0];
 
-    public HttpResponse(byte[] body) {
+    public HttpResponse(MIME mime, byte[] body) {
         this.status = HttpStatusCode.OK;
-        this.mime = mime.HTML;
         this.body = body;
-        this.header = generateHeader(body.length);
+        this.header.put("mime", mime.getMIME());
     }
 
-    public HttpResponse(HttpStatusCode httpStatusCode, MIME mime, byte[] body) {
-        this.status = httpStatusCode;
-        this.mime = mime;
-        this.body = body;
-        this.header = generateHeader(body.length);
+    public HttpResponse(String host, String location) {
+        this.status = HttpStatusCode.FOUND;
+        this.header.put("location", "http://" + host + location);
     }
 
-    private String generateHeader(int contentLength) {
+    public byte[] getHeaderByte() {
         StringBuffer sb = new StringBuffer();
         sb.append("HTTP/1.1 " + status.getStatusCode() + " " + status + " \r\n");
-        sb.append("Content-Type: "+ mime.getMIME() +";charset=utf-8\r\n");
-        sb.append("Content-Length: " + contentLength + "\r\n");
-        sb.append("\r\n");
-        return sb.toString();
+
+        if (status == HttpStatusCode.OK) {
+            sb.append("Content-Type: " + header.get("mime") + ";charset=utf-8\r\n");
+            sb.append("Content-Length: " + body.length + "\r\n");
+            sb.append("\r\n");
+        } else if (status == HttpStatusCode.FOUND) {
+            String location = header.containsKey("location") ? header.get("location") : "index.html";
+            sb.append("Location: " + location);
+        }
+
+        return sb.toString().getBytes();
     }
 }

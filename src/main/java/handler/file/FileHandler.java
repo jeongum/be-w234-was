@@ -15,7 +15,7 @@ public class FileHandler implements Handler {
     public HttpResponse handle(HttpRequest request) {
         byte[] body = getContents(request.getPath());
 
-        return new HttpResponse(HttpStatusCode.OK, request.getMime(), body);
+        return new HttpResponse(request.getMime(), body);
     }
 
     public byte[] getContents(String path) {
