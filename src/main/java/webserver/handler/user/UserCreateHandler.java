@@ -1,5 +1,6 @@
 package webserver.handler.user;
 
+import constant.Path;
 import webserver.handler.Handler;
 import service.UserService;
 import webserver.http.request.HttpRequest;
@@ -15,11 +16,11 @@ public class UserCreateHandler implements Handler {
 
     @Override
     public HttpResponse handle(HttpRequest request) {
+        Map<String, String> header = new HashMap<>();
+
         userService.createUser(request.getBody());
 
-        Map<String, String> header = new HashMap<>();
-        header.put("location", "http://" + request.getHeader().get("Host") + "/index.html");
-
+        header.put("location", "http://" + request.getHeader().get("Host") + Path.HOME);
         return new HttpResponse(HttpStatusCode.FOUND, header);
     }
 }
