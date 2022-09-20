@@ -13,7 +13,7 @@ public class UserService {
     private static UserService instance = new UserService();
 
     private UserService() {
-        userRepository = new UserMemoryRepository();
+        userRepository = UserMemoryRepository.getInstance();
     }
 
     public static UserService getInstance() {
