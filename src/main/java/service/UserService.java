@@ -21,10 +21,9 @@ public class UserService {
     }
 
     public User createUser(Map<String, String> body) {
-        if (!body.containsKey("userId")) throw new InvalidParameterException("userId가 없습니다.");
-        if (!body.containsKey("password")) throw new InvalidParameterException("password가 없습니다.");
-        if (!body.containsKey("name")) throw new InvalidParameterException("name가 없습니다.");
-        if (!body.containsKey("email")) throw new InvalidParameterException("email가 없습니다.");
+        if (!validCreateData(body)) {
+            throw new InvalidParameterException();
+        }
 
         User user = new User(body.get("userId"), body.get("password"), body.get("name"), body.get("email"));
         userRepository.save(user);
@@ -33,12 +32,27 @@ public class UserService {
     }
 
     public boolean login(Map<String, String> body) {
-        if (!body.containsKey("userId")) throw new InvalidParameterException("userId가 없습니다.");
-        if (!body.containsKey("password")) throw new InvalidParameterException("password가 없습니다.");
+        if (!validLoginData(body)) {
+            throw new InvalidParameterException();
+        }
 
         User user = userRepository.findById(body.get("userId")).orElse(null);
 
         if (user == null || !user.getPassword().equals("password")) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validLoginData(Map<String, String> body) {
+        if (!body.containsKey("userId") || !body.containsKey("password")) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validCreateData(Map<String, String> body) {
+        if (!body.containsKey("userId") || !body.containsKey("password") || !body.containsKey("name") || !body.containsKey("email")) {
             return false;
         }
         return true;
