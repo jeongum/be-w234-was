@@ -3,10 +3,13 @@ package webserver.handler.file;
 import webserver.handler.Handler;
 import webserver.http.request.HttpRequest;
 import webserver.http.response.HttpResponse;
+import webserver.http.response.HttpStatusCode;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FileHandler implements Handler {
 
@@ -14,7 +17,9 @@ public class FileHandler implements Handler {
     public HttpResponse handle(HttpRequest request) {
         byte[] body = getContents(request.getPath());
 
-        return new HttpResponse(request.getMime(), body);
+        Map<String, String> header = new HashMap<>();
+        header.put("mime", request.getMime().getMIME());
+        return new HttpResponse(HttpStatusCode.OK, header, body);
     }
 
     // TODO("error 처리")
