@@ -5,6 +5,7 @@ import model.User;
 import util.HttpRequestUtils;
 import webserver.http.request.HttpRequest;
 import webserver.http.response.HttpResponse;
+import webserver.http.response.HttpStatusCode;
 
 import java.security.InvalidParameterException;
 import java.util.Map;
@@ -13,12 +14,12 @@ public class UserCreateHandler implements Handler {
 
     @Override
     public HttpResponse handle(HttpRequest request) {
-        Map<String, String> params = HttpRequestUtils.parseQueryString(request.getQuery());
-        User user = createUser(params);
+        createUser(request.getBody());
 
-        return new HttpResponse(user.getUserId().getBytes());
+        return new HttpResponse(request.getHeader().get("Host"), "/index.html");
     }
 
+    // TODO("error 처리")
     public User createUser(Map<String, String> params) {
         if (!params.containsKey("userId")) throw new InvalidParameterException("userId가 없습니다.");
         if (!params.containsKey("password")) throw new InvalidParameterException("password가 없습니다.");

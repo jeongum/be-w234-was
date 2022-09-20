@@ -23,7 +23,7 @@ public class RequestHandler implements Runnable {
         logger.debug("New Client Connect! Connected IP : {}, Port : {}", connection.getInetAddress(), connection.getPort());
 
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
-            HttpRequest request = new HttpRequest(new BufferedReader(new InputStreamReader(in, "UTF-8")));
+            HttpRequest request = HttpRequest.parseHttpRequest(new BufferedReader(new InputStreamReader(in, "UTF-8")));
 
             Handler handler = mapper.handlerMapping(request.getPath());
             HttpResponse response = handler.handle(request);
@@ -36,7 +36,7 @@ public class RequestHandler implements Runnable {
 
     private void sendHttpResponse(OutputStream out, HttpResponse response) throws IOException {
         DataOutputStream dos = new DataOutputStream(out);
-        dos.writeBytes(response.getHeader());
+        dos.write(response.getHeaderByte());
         dos.write(response.getBody());
         dos.flush();
     }
