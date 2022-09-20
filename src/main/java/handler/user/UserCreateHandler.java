@@ -2,6 +2,7 @@ package handler.user;
 
 import handler.Handler;
 import model.User;
+import service.UserService;
 import util.HttpRequestUtils;
 import webserver.http.request.HttpRequest;
 import webserver.http.response.HttpResponse;
@@ -12,21 +13,11 @@ import java.util.Map;
 
 public class UserCreateHandler implements Handler {
 
+    private UserService userService = UserService.getInstance();
+
     @Override
     public HttpResponse handle(HttpRequest request) {
-        createUser(request.getBody());
-
+        userService.createUser(request.getBody());
         return new HttpResponse(request.getHeader().get("Host"), "/index.html");
-    }
-
-    // TODO("error 처리")
-    public User createUser(Map<String, String> params) {
-        if (!params.containsKey("userId")) throw new InvalidParameterException("userId가 없습니다.");
-        if (!params.containsKey("password")) throw new InvalidParameterException("password가 없습니다.");
-        if (!params.containsKey("name")) throw new InvalidParameterException("name가 없습니다.");
-        if (!params.containsKey("email")) throw new InvalidParameterException("email가 없습니다.");
-
-        User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
-        return user;
     }
 }
