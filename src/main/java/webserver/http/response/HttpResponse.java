@@ -10,7 +10,6 @@ import java.util.Map;
 
 @Slf4j
 @Getter
-@NoArgsConstructor
 public class HttpResponse {
 
     private HttpStatusCode status;

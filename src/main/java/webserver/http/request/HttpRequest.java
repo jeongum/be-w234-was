@@ -14,14 +14,14 @@ import java.util.Map;
 
 @Slf4j
 @Getter
-@NoArgsConstructor
 public class HttpRequest {
-    private HttpMethod method;
-    private String path;
-    private MIME mime;
-    private Map<String, String> header;
-    private Map<String, String> body;
-    private Map<String, String> parameter;
+    private final HttpMethod method;
+    private final String path;
+    private final MIME mime;
+    private final Map<String, String> header;
+    private final Map<String, String> body;
+    private final Map<String, String> parameter;
+
 
     public HttpRequest(HttpMethod method, String path, MIME mime, Map<String, String> header, Map<String, String> body, Map<String, String> parameter) {
         this.method = method;
