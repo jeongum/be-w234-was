@@ -31,4 +31,16 @@ public class UserService {
 
         return user;
     }
+
+    public boolean login(Map<String, String> body) {
+        if (!body.containsKey("userId")) throw new InvalidParameterException("userId가 없습니다.");
+        if (!body.containsKey("password")) throw new InvalidParameterException("password가 없습니다.");
+
+        User user = userRepository.findById(body.get("userId")).orElse(null);
+
+        if (user == null || !user.getPassword().equals("password")) {
+            return false;
+        }
+        return true;
+    }
 }

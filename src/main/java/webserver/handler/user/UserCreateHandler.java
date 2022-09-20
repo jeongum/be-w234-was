@@ -1,15 +1,9 @@
-package handler.user;
+package webserver.handler.user;
 
-import handler.Handler;
-import model.User;
+import webserver.handler.Handler;
 import service.UserService;
-import util.HttpRequestUtils;
 import webserver.http.request.HttpRequest;
 import webserver.http.response.HttpResponse;
-import webserver.http.response.HttpStatusCode;
-
-import java.security.InvalidParameterException;
-import java.util.Map;
 
 public class UserCreateHandler implements Handler {
 

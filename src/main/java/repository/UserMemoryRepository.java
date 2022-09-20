@@ -5,6 +5,7 @@ import model.User;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class UserMemoryRepository implements UserRepository {
 
@@ -26,5 +27,11 @@ public class UserMemoryRepository implements UserRepository {
         }
         users.put(user.getUserId(), user);
         return user;
+    }
+
+    @Override
+    public Optional<User> findById(String userId) {
+        User user = users.get(userId);
+        return Optional.ofNullable(user);
     }
 }

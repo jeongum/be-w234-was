@@ -1,9 +1,8 @@
-package handler.file;
+package webserver.handler.file;
 
-import handler.Handler;
+import webserver.handler.Handler;
 import webserver.http.request.HttpRequest;
 import webserver.http.response.HttpResponse;
-import webserver.http.response.HttpStatusCode;
 
 import java.io.File;
 import java.io.IOException;
