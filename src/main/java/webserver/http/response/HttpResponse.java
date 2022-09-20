@@ -16,6 +16,7 @@ public class HttpResponse {
 
     private HttpStatusCode status;
     private Map<String, String> header = new HashMap<>();
+    private Map<String, String> cookies = new HashMap<>();
     private byte[] body = new byte[0];
 
     public HttpResponse(MIME mime, byte[] body) {
@@ -29,6 +30,14 @@ public class HttpResponse {
         this.header.put("location", "http://" + host + location);
     }
 
+    public HttpResponse(String host, String location, Map<String, String> cookies) {
+        this(host, location);
+        this.cookies.putAll(cookies);
+        for (Map.Entry<String, String> entry : cookies.entrySet()) {
+            System.out.println(entry.getKey() + "=" + entry.getValue() + "; ");
+        }
+    }
+
     public byte[] getHeaderByte() {
         StringBuffer sb = new StringBuffer();
 
@@ -38,9 +47,20 @@ public class HttpResponse {
             sb.append("Content-Type: " + header.get("mime") + ";charset=utf-8\r\n");
             sb.append("Content-Length: " + body.length + "\r\n");
         } else if (status == HttpStatusCode.FOUND) {
-            sb.append("Location: " + header.get("location"));
+            sb.append("Location: " + header.get("location") + "\r\n");
         }
+
+        for (Map.Entry<String, String> entry : cookies.entrySet()) {
+            sb.append("Set-Cookie: ");
+            sb.append(entry.getKey() + "=" + entry.getValue() + "; ");
+            if (entry.getKey().equals("logined")) {
+                sb.append("Path=/");
+            }
+            sb.append("\r\n");
+        }
+
         sb.append("\r\n");
+
 
         return sb.toString().getBytes();
     }
