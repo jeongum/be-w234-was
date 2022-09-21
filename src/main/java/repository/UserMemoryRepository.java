@@ -35,4 +35,9 @@ public class UserMemoryRepository implements UserRepository {
         User user = users.get(userId);
         return Optional.ofNullable(user);
     }
+
+    @Override
+    public void deleteAll(){
+        users.clear();
+    }
 }
