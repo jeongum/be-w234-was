@@ -25,9 +25,9 @@ public class UserCreateHandler implements Handler {
 
             header.put("location", "http://" + request.getHeader().get("Host") + Path.HOME);
             return new HttpResponse(HttpStatusCode.FOUND, header);
+
         } catch (InvalidParameterException e) {
             log.error(e.getMessage());
-
             header.put("location", "http://" + request.getHeader().get("Host") + Path.JOIN);
             return new HttpResponse(HttpStatusCode.FOUND, header);
         }

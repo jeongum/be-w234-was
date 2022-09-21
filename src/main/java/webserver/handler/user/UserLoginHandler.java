@@ -21,20 +21,16 @@ public class UserLoginHandler implements Handler {
     public HttpResponse handle(HttpRequest request) {
         Map<String, String> header = new HashMap<>();
         Map<String, String> cookies = new HashMap<>();
-        try {
-            if (userService.login(request.getBody())) {
-                header.put("location", "http://" + request.getHeader().get("Host") + Path.LOGIN_FAILED);
-                cookies.put("logined", "false");
-                return new HttpResponse(HttpStatusCode.FOUND, header, cookies);
-            }
+
+        if (userService.login(request.getBody())) {
+
             header.put("location", "http://" + request.getHeader().get("Host") + Path.HOME);
             cookies.put("logined", "true");
             return new HttpResponse(HttpStatusCode.FOUND, header, cookies);
-        } catch (InvalidParameterException e) {
-            log.error(e.getMessage());
-
-            header.put("location", "http://" + request.getHeader().get("Host") + Path.LOGIN_FAILED);
-            return new HttpResponse(HttpStatusCode.FOUND, header);
         }
+
+        header.put("location", "http://" + request.getHeader().get("Host") + Path.LOGIN_FAILED);
+        cookies.put("logined", "false");
+        return new HttpResponse(HttpStatusCode.FOUND, header, cookies);
     }
 }

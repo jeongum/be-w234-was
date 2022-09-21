@@ -33,12 +33,12 @@ public class UserService {
 
     public boolean login(Map<String, String> body) {
         if (!validLoginData(body)) {
-            throw new InvalidParameterException();
+            return false;
         }
 
         User user = userRepository.findById(body.get("userId")).orElse(null);
 
-        if (user == null || !user.getPassword().equals("password")) {
+        if (user == null || !user.getPassword().equals(body.get("password"))) {
             return false;
         }
         return true;
