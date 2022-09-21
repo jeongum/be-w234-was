@@ -1,4 +1,4 @@
-package handler.file;
+package webserver.handler.file;
 
 import webserver.handler.file.FileHandler;
 import org.junit.jupiter.api.DisplayName;

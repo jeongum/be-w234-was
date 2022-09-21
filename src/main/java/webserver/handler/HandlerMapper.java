@@ -4,7 +4,6 @@ import webserver.handler.file.FileHandler;
 import webserver.handler.user.UserCreateHandler;
 import webserver.handler.user.UserLoginHandler;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 

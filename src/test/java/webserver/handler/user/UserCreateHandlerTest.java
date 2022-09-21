@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import repository.UserMemoryRepository;
 import repository.UserRepository;
-import service.UserService;
 import util.HttpRequestParser;
 import webserver.http.request.HttpRequest;
 import webserver.http.response.HttpResponse;
