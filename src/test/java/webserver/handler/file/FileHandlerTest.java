@@ -1,6 +1,6 @@
-package handler.file;
+package webserver.handler.file;
 
-import handler.file.FileHandler;
+import webserver.handler.file.FileHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,19 +22,5 @@ class FileHandlerTest {
         // then
         String contentString = new String(contents);
         assertTrue(contentString.contains("SLiPP Java Web Programming"));
-    }
-
-    @Test
-    @DisplayName("파일이 없을 경우 Default를 반환한다.")
-    void getDefaultContents(){
-        // given
-        String path = "nofile.html";
-
-        // when
-        byte[] contents = fileHandler.getContents(path);
-
-        // then
-        String contentString = new String(contents);
-        assertTrue(contentString.equals("Hello World"));
     }
 }

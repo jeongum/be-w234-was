@@ -1,6 +1,7 @@
-package handler.file;
+package webserver.handler.file;
 
-import handler.Handler;
+import constant.Path;
+import webserver.handler.Handler;
 import webserver.http.request.HttpRequest;
 import webserver.http.response.HttpResponse;
 import webserver.http.response.HttpStatusCode;
@@ -8,22 +9,31 @@ import webserver.http.response.HttpStatusCode;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FileHandler implements Handler {
 
     @Override
     public HttpResponse handle(HttpRequest request) {
+        Map<String, String> header = new HashMap<>();
+
         byte[] body = getContents(request.getPath());
 
-        return new HttpResponse(request.getMime(), body);
+        if (body == null) {
+            header.put("location", "http://" + request.getHeader().get("Host") + Path.HOME);
+            return new HttpResponse(HttpStatusCode.FOUND, header);
+        }
+
+        header.put("mime", request.getMime().getMIME());
+        return new HttpResponse(HttpStatusCode.OK, header, body);
     }
 
-    // TODO("error 처리")
     public byte[] getContents(String path) {
         try {
             return Files.readAllBytes(new File("./webapp" + path).toPath());
         } catch (IOException e) {
-            return "Hello World".getBytes();
+            return null;
         }
     }
 }
