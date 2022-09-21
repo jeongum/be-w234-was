@@ -35,8 +35,8 @@ public class HttpResponse {
     public byte[] getHeaderByte() {
         StringBuffer sb = new StringBuffer();
 
-        // TODO("if-else 줄이기")
         sb.append("HTTP/1.1 " + status.getStatusCode() + " " + status + " \r\n");
+
         if (status == HttpStatusCode.OK) {
             sb.append("Content-Type: " + header.get("mime") + ";charset=utf-8\r\n");
             sb.append("Content-Length: " + body.length + "\r\n");
