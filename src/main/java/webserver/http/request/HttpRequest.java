@@ -2,13 +2,8 @@ package webserver.http.request;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import util.HttpRequestUtils;
-import util.IOUtils;
 import webserver.http.MIME;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -30,6 +25,4 @@ public class HttpRequest {
         this.body = body;
         this.parameter = parameter;
     }
-
-
 }
