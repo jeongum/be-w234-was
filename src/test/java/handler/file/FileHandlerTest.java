@@ -23,18 +23,4 @@ class FileHandlerTest {
         String contentString = new String(contents);
         assertTrue(contentString.contains("SLiPP Java Web Programming"));
     }
-
-    @Test
-    @DisplayName("파일이 없을 경우 Default를 반환한다.")
-    void getDefaultContents(){
-        // given
-        String path = "nofile.html";
-
-        // when
-        byte[] contents = fileHandler.getContents(path);
-
-        // then
-        String contentString = new String(contents);
-        assertTrue(contentString.equals("Hello World"));
-    }
 }

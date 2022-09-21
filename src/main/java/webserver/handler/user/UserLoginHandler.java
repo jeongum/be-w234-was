@@ -22,15 +22,14 @@ public class UserLoginHandler implements Handler {
         Map<String, String> header = new HashMap<>();
         Map<String, String> cookies = new HashMap<>();
 
-        if (userService.login(request.getBody())) {
+        boolean logined = userService.login(request.getBody());
 
+        if (logined) {
             header.put("location", "http://" + request.getHeader().get("Host") + Path.HOME);
-            cookies.put("logined", "true");
-            return new HttpResponse(HttpStatusCode.FOUND, header, cookies);
+        } else {
+            header.put("location", "http://" + request.getHeader().get("Host") + Path.LOGIN_FAILED);
         }
-
-        header.put("location", "http://" + request.getHeader().get("Host") + Path.LOGIN_FAILED);
-        cookies.put("logined", "false");
+        cookies.put("logined", String.valueOf(logined));
         return new HttpResponse(HttpStatusCode.FOUND, header, cookies);
     }
 }
