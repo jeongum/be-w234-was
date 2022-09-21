@@ -22,7 +22,7 @@ public class HttpResponse {
         this.header.putAll(header);
     }
 
-    public HttpResponse(HttpStatusCode status, Map<String, String> header, byte[] body){
+    public HttpResponse(HttpStatusCode status, Map<String, String> header, byte[] body) {
         this(status, header);
         this.body = body;
     }
@@ -37,16 +37,20 @@ public class HttpResponse {
 
         sb.append("HTTP/1.1 " + status.getStatusCode() + " " + status + " \r\n");
 
-        if (status == HttpStatusCode.OK) {
-            sb.append("Content-Type: " + header.get("mime") + ";charset=utf-8\r\n");
-            sb.append("Content-Length: " + body.length + "\r\n");
-        } else if (status == HttpStatusCode.FOUND) {
-            sb.append("Location: " + header.get("location") + "\r\n");
+        switch (status) {
+            case OK: {
+                sb.append("Content-Type: " + header.get("mime") + ";charset=utf-8\r\n");
+                sb.append("Content-Length: " + body.length + "\r\n");
+                break;
+            }
+            case FOUND: {
+                sb.append("Location: " + header.get("location") + "\r\n");
+                break;
+            }
         }
 
         sb.append(generateCookieHeader());
         sb.append("\r\n");
-
 
         return sb.toString().getBytes();
     }

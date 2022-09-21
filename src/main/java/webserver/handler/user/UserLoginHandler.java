@@ -24,11 +24,8 @@ public class UserLoginHandler implements Handler {
 
         boolean logined = userService.login(request.getBody());
 
-        if (logined) {
-            header.put("location", "http://" + request.getHeader().get("Host") + Path.HOME);
-        } else {
-            header.put("location", "http://" + request.getHeader().get("Host") + Path.LOGIN_FAILED);
-        }
+        String location = (logined)? Path.HOME : Path.LOGIN_FAILED;
+        header.put("location", "http://" + request.getHeader().get("Host") + location);
         cookies.put("logined", String.valueOf(logined));
         return new HttpResponse(HttpStatusCode.FOUND, header, cookies);
     }

@@ -5,6 +5,7 @@ import webserver.handler.HandlerMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import webserver.http.request.HttpRequest;
+import util.HttpRequestParser;
 import webserver.http.response.HttpResponse;
 
 import java.io.*;
@@ -23,7 +24,7 @@ public class RequestHandler implements Runnable {
         logger.debug("New Client Connect! Connected IP : {}, Port : {}", connection.getInetAddress(), connection.getPort());
 
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
-            HttpRequest request = HttpRequest.parseHttpRequest(new BufferedReader(new InputStreamReader(in, "UTF-8")));
+            HttpRequest request = HttpRequestParser.parseHttpRequest(new BufferedReader(new InputStreamReader(in, "UTF-8")));
 
             Handler handler = mapper.handlerMapping(request.getPath());
             HttpResponse response = handler.handle(request);

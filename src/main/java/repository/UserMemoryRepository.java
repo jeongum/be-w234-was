@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public class UserMemoryRepository implements UserRepository {
 
-    private Map<String, User> users;
     private static UserMemoryRepository instance = new UserMemoryRepository();
 
     private UserMemoryRepository() {
@@ -19,6 +18,8 @@ public class UserMemoryRepository implements UserRepository {
     public static UserMemoryRepository getInstance() {
         return instance;
     }
+
+    private Map<String, User> users;
 
     @Override
     public User save(User user) {

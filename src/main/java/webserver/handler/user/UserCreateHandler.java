@@ -22,10 +22,8 @@ public class UserCreateHandler implements Handler {
         Map<String, String> header = new HashMap<>();
         try {
             userService.createUser(request.getBody());
-
             header.put("location", "http://" + request.getHeader().get("Host") + Path.HOME);
             return new HttpResponse(HttpStatusCode.FOUND, header);
-
         } catch (InvalidParameterException e) {
             log.error(e.getMessage());
             header.put("location", "http://" + request.getHeader().get("Host") + Path.JOIN);
