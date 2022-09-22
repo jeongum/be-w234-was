@@ -15,6 +15,7 @@ public class HttpRequestParser {
     public static HttpRequest parse(BufferedReader br) throws IOException {
         Map<String, String> parameter = new HashMap<>();
         Map<String, String> header = new HashMap<>();
+        Map<String, String> cookie = new HashMap<>();
         Map<String, String> body = new HashMap<>();
 
         // Set First Info
@@ -23,7 +24,7 @@ public class HttpRequestParser {
 
         String[] url = firstLine[1].split("\\?");
         String path = url[0];
-        if(url.length > 1){
+        if (url.length > 1) {
             parameter = parseKeyValue(url[1]);
         }
         MIME mime = MIME.getMIMEFromPath(path);
@@ -35,6 +36,10 @@ public class HttpRequestParser {
             line = br.readLine();
             if (line == null || "".equals(line)) break;
             HttpRequestUtils.Pair pair = generateHeaderPair(line);
+            if ("Cookie".equals(pair.getKey())) {
+                cookie = HttpRequestUtils.parseCookies(pair.getValue());
+                continue;
+            }
             header.put(pair.getKey(), pair.getValue());
         }
 
@@ -44,7 +49,7 @@ public class HttpRequestParser {
             body = parseKeyValue(bodyStr);
         }
 
-        return new HttpRequest(method, path, mime, header, body, parameter);
+        return new HttpRequest(method, path, mime, header, body, parameter, cookie);
     }
 
     private static Map<String, String> parseKeyValue(String string) {
