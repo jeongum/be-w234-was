@@ -8,8 +8,6 @@ import webserver.http.request.HttpRequest;
 import webserver.http.response.HttpResponse;
 import webserver.http.response.HttpStatusCode;
 
-import java.io.File;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,8 +19,10 @@ public class UserListHandler implements Handler {
     @Override
     public HttpResponse handle(HttpRequest request) {
         Map<String, String> header = new HashMap<>();
-        if (isLogin(request.getCookie())){
-            return new HttpResponse(HttpStatusCode.OK, header, "wjddma".getBytes());
+        if (isLogin(request.getCookie())) {
+            header.put("mime", request.getMime().getValue());
+            byte[] body = userService.list();
+            return new HttpResponse(HttpStatusCode.OK, header, body);
         }
         header.put("location", "http://" + request.getHeader().get("Host") + Path.LOGIN);
         return new HttpResponse(HttpStatusCode.FOUND, header);

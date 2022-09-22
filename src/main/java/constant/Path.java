@@ -5,4 +5,6 @@ public final class Path {
     public static final String JOIN = "/user/form.html";
     public static final String LOGIN = "/user/login.html";
     public static final String LOGIN_FAILED = "/user/login_failed.html";
+    public static final String USER_LIST_HEADER = "/user/list_header.html";
+    public static final String USER_LIST_FOOTER = "/user/list_footer.html";
 }

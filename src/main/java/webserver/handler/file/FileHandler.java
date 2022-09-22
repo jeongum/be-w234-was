@@ -1,6 +1,7 @@
 package webserver.handler.file;
 
 import constant.Path;
+import util.FileUtils;
 import webserver.handler.Handler;
 import webserver.http.request.HttpRequest;
 import webserver.http.response.HttpResponse;
@@ -18,7 +19,7 @@ public class FileHandler implements Handler {
     public HttpResponse handle(HttpRequest request) {
         Map<String, String> header = new HashMap<>();
 
-        byte[] body = getContents(request.getPath());
+        byte[] body = FileUtils.getContents(request.getPath());
 
         if (body == null) {
             header.put("location", "http://" + request.getHeader().get("Host") + Path.HOME);
@@ -27,13 +28,5 @@ public class FileHandler implements Handler {
 
         header.put("mime", request.getMime().getValue());
         return new HttpResponse(HttpStatusCode.OK, header, body);
-    }
-
-    public byte[] getContents(String path) {
-        try {
-            return Files.readAllBytes(new File("./webapp" + path).toPath());
-        } catch (IOException e) {
-            return null;
-        }
     }
 }
