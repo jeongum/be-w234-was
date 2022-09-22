@@ -6,6 +6,8 @@ import repository.UserRepository;
 
 import java.security.InvalidParameterException;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UserService {
 
@@ -36,12 +38,12 @@ public class UserService {
             return false;
         }
 
-        User user = userRepository.findById(body.get("userId")).orElse(null);
+        AtomicBoolean login = new AtomicBoolean(false);
+        userRepository.findById(body.get("userId")).ifPresent(user -> {
+            if (user.getPassword().equals(body.get("password"))) login.set(true);
+        });
 
-        if (user == null || !user.getPassword().equals(body.get("password"))) {
-            return false;
-        }
-        return true;
+        return login.get();
     }
 
     private boolean validLoginData(Map<String, String> body) {
