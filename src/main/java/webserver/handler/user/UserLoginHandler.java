@@ -22,9 +22,14 @@ public class UserLoginHandler implements Handler {
         Map<String, String> header = new HashMap<>();
         Map<String, String> cookies = new HashMap<>();
 
-        boolean logined = userService.login(request.getBody());
+        boolean logined;
+        try {
+            logined = userService.login(request.getBody());
+        } catch (InvalidParameterException e) {
+            logined = false;
+        }
 
-        String location = (logined)? Path.HOME : Path.LOGIN_FAILED;
+        String location = (logined) ? Path.HOME : Path.LOGIN_FAILED;
         header.put("location", "http://" + request.getHeader().get("Host") + location);
         cookies.put("logined", String.valueOf(logined));
         return new HttpResponse(HttpStatusCode.FOUND, header, cookies);

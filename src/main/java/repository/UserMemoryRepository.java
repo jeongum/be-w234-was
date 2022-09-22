@@ -6,13 +6,14 @@ import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UserMemoryRepository implements UserRepository {
 
     private static UserMemoryRepository instance = new UserMemoryRepository();
 
     private UserMemoryRepository() {
-        users = new HashMap<>();
+        users = new ConcurrentHashMap<>();
     }
 
     public static UserMemoryRepository getInstance() {
@@ -39,5 +40,10 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public void deleteAll(){
         users.clear();
+    }
+
+    @Override
+    public int count() {
+        return users.size();
     }
 }

@@ -6,6 +6,7 @@ import repository.UserRepository;
 
 import java.security.InvalidParameterException;
 import java.util.Map;
+import java.util.Optional;
 
 public class UserService {
 
@@ -33,15 +34,12 @@ public class UserService {
 
     public boolean login(Map<String, String> body) {
         if (!validLoginData(body)) {
-            return false;
+            throw new InvalidParameterException();
         }
 
-        User user = userRepository.findById(body.get("userId")).orElse(null);
+        User user = userRepository.findById(body.get("userId")).orElseThrow(InvalidParameterException::new);
 
-        if (user == null || !user.getPassword().equals(body.get("password"))) {
-            return false;
-        }
-        return true;
+        return (user.getPassword().equals(body.get("password"))) ? true : false;
     }
 
     private boolean validLoginData(Map<String, String> body) {

@@ -25,7 +25,7 @@ public class FileHandler implements Handler {
             return new HttpResponse(HttpStatusCode.FOUND, header);
         }
 
-        header.put("mime", request.getMime().getMIME());
+        header.put("mime", request.getMime().getValue());
         return new HttpResponse(HttpStatusCode.OK, header, body);
     }
 

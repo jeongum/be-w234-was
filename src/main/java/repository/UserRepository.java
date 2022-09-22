@@ -10,4 +10,5 @@ public interface UserRepository {
     public Optional<User> findById(String userId);
 
     void deleteAll();
+    int count();
 }
