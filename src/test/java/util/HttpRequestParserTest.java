@@ -1,6 +1,5 @@
 package util;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import webserver.http.MIME;
@@ -24,7 +23,7 @@ class HttpRequestParserTest {
         InputStream in = new ByteArrayInputStream(httpRequest.getBytes());
 
         // when
-        HttpRequest request = HttpRequestParser.parseHttpRequest(new BufferedReader(new InputStreamReader(in, "UTF-8")));
+        HttpRequest request = HttpRequestParser.parse(new BufferedReader(new InputStreamReader(in, "UTF-8")));
 
         // then
         assertEquals(request.getMethod(), HttpMethod.GET);

@@ -9,7 +9,12 @@ public enum MIME {
         this.mime = mime;
     }
 
-    public String getMIME() {
+    public String getValue() {
         return mime;
+    }
+
+    public static MIME getMIMEFromPath(String path){
+        if (path.endsWith(".css")) return MIME.CSS;
+        return MIME.HTML;
     }
 }

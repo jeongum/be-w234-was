@@ -40,7 +40,7 @@ class UserLoginHandlerTest {
                 "Content-Type: application/x-www-form-urlencoded\n" +
                 "Accept: */*\n" + "\n" +
                 "userId=userId&password=password").getBytes();
-        HttpRequest request = HttpRequestParser.parseHttpRequest(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(requestStr), "UTF-8")));
+        HttpRequest request = HttpRequestParser.parse(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(requestStr), "UTF-8")));
 
         // when
         HttpResponse response = userLoginHandler.handle(request);
@@ -62,7 +62,7 @@ class UserLoginHandlerTest {
                 "Content-Type: application/x-www-form-urlencoded\n" +
                 "Accept: */*\n" + "\n" +
                 "userId=wrongId&password=password").getBytes();
-        HttpRequest request = HttpRequestParser.parseHttpRequest(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(requestStr), "UTF-8")));
+        HttpRequest request = HttpRequestParser.parse(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(requestStr), "UTF-8")));
 
         // when
         HttpResponse response = userLoginHandler.handle(request);

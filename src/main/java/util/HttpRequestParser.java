@@ -1,8 +1,6 @@
 package util;
 
 import lombok.extern.slf4j.Slf4j;
-import util.HttpRequestUtils;
-import util.IOUtils;
 import webserver.http.MIME;
 import webserver.http.request.HttpMethod;
 import webserver.http.request.HttpRequest;
@@ -14,20 +12,22 @@ import java.util.Map;
 
 @Slf4j
 public class HttpRequestParser {
-    public static HttpRequest parseHttpRequest(BufferedReader br) throws IOException {
-        HttpMethod method;
-        String path;
-        MIME mime;
-        Map<String, String> parameter;
+    public static HttpRequest parse(BufferedReader br) throws IOException {
+        Map<String, String> parameter = new HashMap<>();
         Map<String, String> header = new HashMap<>();
         Map<String, String> body = new HashMap<>();
 
         // Set First Info
-        String firstLine = br.readLine();
-        method = generateMethod(firstLine);
-        path = generatePath(firstLine);
-        parameter = generateParameter(firstLine);
-        mime = generateMIME(path);
+        String[] firstLine = br.readLine().split(" ");
+        HttpMethod method = HttpMethod.valueOf(firstLine[0]);
+
+        String[] url = firstLine[1].split("\\?");
+        String path = url[0];
+        if(url.length > 1){
+            parameter = parseKeyValue(url[1]);
+        }
+        MIME mime = MIME.getMIMEFromPath(path);
+
 
         // Set Header
         String line;
@@ -40,46 +40,19 @@ public class HttpRequestParser {
 
         // Set Body
         if (header.containsKey("Content-Length")) {
-            body = generateBody(br, Integer.parseInt(header.get("Content-Length")));
+            String bodyStr = IOUtils.readData(br, Integer.parseInt(header.get("Content-Length")));
+            body = parseKeyValue(bodyStr);
         }
 
         return new HttpRequest(method, path, mime, header, body, parameter);
     }
 
-    private static Map<String, String> generateBody(BufferedReader br, int contentLength) {
-        try {
-            String body = IOUtils.readData(br, contentLength);
-            return HttpRequestUtils.parseQueryString(body);
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            return null;
-        }
+    private static Map<String, String> parseKeyValue(String string) {
+        return HttpRequestUtils.parseQueryString(string);
     }
 
     private static HttpRequestUtils.Pair generateHeaderPair(String line) {
         return HttpRequestUtils.parseHeader(line);
     }
 
-    private static Map<String, String> generateParameter(String firstLine) {
-        Map<String, String> parameter = new HashMap<>();
-        String[] url = firstLine.split(" ")[1].split("\\?");
-        if (url.length > 1) {
-            parameter = HttpRequestUtils.parseQueryString(url[1]);
-        }
-        return parameter;
-    }
-
-    private static String generatePath(String firstLine) {
-        String[] url = firstLine.split(" ")[1].split("\\?");
-        return url[0];
-    }
-
-    private static HttpMethod generateMethod(String firstLine) {
-        return HttpMethod.valueOf(firstLine.split(" ")[0]);
-    }
-
-    private static MIME generateMIME(String path) {
-        if (path.endsWith(".css")) return MIME.CSS;
-        return MIME.HTML;
-    }
 }
