@@ -33,7 +33,7 @@ public class HttpResponse {
     }
 
     public byte[] getHeaderByte() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         sb.append("HTTP/1.1 " + status.getStatusCode() + " " + status + " \r\n");
 
@@ -56,7 +56,7 @@ public class HttpResponse {
     }
 
     private String generateCookieHeader() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : cookies.entrySet()) {
             sb.append("Set-Cookie: ");
             sb.append(entry.getKey() + "=" + entry.getValue() + "; ");
