@@ -20,14 +20,15 @@ public class UserCreateHandler implements Handler {
     @Override
     public HttpResponse handle(HttpRequest request) {
         Map<String, String> header = new HashMap<>();
+        String location;
         try {
             userService.createUser(request.getBody());
-            header.put("location", "http://" + request.getHeader().get("Host") + Path.HOME);
-            return new HttpResponse(HttpStatusCode.FOUND, header);
+            location = Path.HOME;
         } catch (InvalidParameterException e) {
             log.error(e.getMessage());
-            header.put("location", "http://" + request.getHeader().get("Host") + Path.JOIN);
-            return new HttpResponse(HttpStatusCode.FOUND, header);
+            location = Path.JOIN;
         }
+        header.put("location", "http://" + request.getHeader().get("Host") + location);
+        return new HttpResponse(HttpStatusCode.FOUND, header);
     }
 }
