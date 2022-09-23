@@ -3,7 +3,8 @@ package repository;
 import model.User;
 
 import java.security.InvalidParameterException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,7 +39,7 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public void deleteAll(){
+    public void deleteAll() {
         users.clear();
     }
 
@@ -46,4 +47,11 @@ public class UserMemoryRepository implements UserRepository {
     public int count() {
         return users.size();
     }
+
+    @Override
+    public List<User> findAll() {
+        return new ArrayList<>(users.values());
+    }
+
+
 }

@@ -15,14 +15,16 @@ public class HttpRequest {
     private final Map<String, String> header;
     private final Map<String, String> body;
     private final Map<String, String> parameter;
+    private final Map<String, String> cookie;
 
 
-    public HttpRequest(HttpMethod method, String path, MIME mime, Map<String, String> header, Map<String, String> body, Map<String, String> parameter) {
+    public HttpRequest(HttpMethod method, String path, MIME mime, Map<String, String> header, Map<String, String> body, Map<String, String> parameter, Map<String, String> cookie) {
         this.method = method;
         this.path = path;
         this.mime = mime;
         this.header = header;
         this.body = body;
         this.parameter = parameter;
+        this.cookie = cookie;
     }
 }

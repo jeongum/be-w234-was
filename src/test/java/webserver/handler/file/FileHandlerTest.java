@@ -1,5 +1,6 @@
 package webserver.handler.file;
 
+import util.FileUtils;
 import webserver.handler.file.FileHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ class FileHandlerTest {
         String path = "/index.html";
 
         // when
-        byte[] contents = fileHandler.getContents(path);
+        byte[] contents = FileUtils.getContents(path);
 
         // then
         String contentString = new String(contents);
