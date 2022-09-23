@@ -53,7 +53,7 @@ public class UserService {
         return ByteArrayUtils.concat(header, content, footer);
     }
 
-    private byte[] generateUserList() {
+    public byte[] generateUserList() {
         List<User> users = userRepository.findAll();
         int idx = 1;
         StringBuilder sb = new StringBuilder();
