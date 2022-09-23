@@ -13,5 +13,4 @@ public class ByteArrayUtils {
         }
         return out.toByteArray();
     }
-
 }

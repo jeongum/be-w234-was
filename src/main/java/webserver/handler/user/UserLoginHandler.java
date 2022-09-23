@@ -30,7 +30,7 @@ public class UserLoginHandler implements Handler {
         }
 
         String location = (logined) ? Path.HOME : Path.LOGIN_FAILED;
-        header.put("location", "http://" + request.getHeader().get("Host") + location);
+        header.put("location", Path.HTTP + request.getHeader().get("Host") + location);
         cookies.put("logined", String.valueOf(logined));
         return new HttpResponse(HttpStatusCode.FOUND, header, cookies);
     }

@@ -24,7 +24,7 @@ public class UserListHandler implements Handler {
             byte[] body = userService.list();
             return new HttpResponse(HttpStatusCode.OK, header, body);
         }
-        header.put("location", "http://" + request.getHeader().get("Host") + Path.LOGIN);
+        header.put("location", Path.HTTP + request.getHeader().get("Host") + Path.LOGIN);
         return new HttpResponse(HttpStatusCode.FOUND, header);
     }
 

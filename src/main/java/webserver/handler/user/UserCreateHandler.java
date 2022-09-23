@@ -28,7 +28,7 @@ public class UserCreateHandler implements Handler {
             log.error(e.getMessage());
             location = Path.JOIN;
         }
-        header.put("location", "http://" + request.getHeader().get("Host") + location);
+        header.put("location", Path.HTTP + request.getHeader().get("Host") + location);
         return new HttpResponse(HttpStatusCode.FOUND, header);
     }
 }

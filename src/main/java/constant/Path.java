@@ -1,6 +1,7 @@
 package constant;
 
 public final class Path {
+    public static final String HTTP = "http://";
     public static final String HOME = "/index.html";
     public static final String JOIN = "/user/form.html";
     public static final String LOGIN = "/user/login.html";
