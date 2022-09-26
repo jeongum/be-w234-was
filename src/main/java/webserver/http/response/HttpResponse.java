@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import webserver.http.MIME;
+import webserver.http.request.HttpRequest;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +27,11 @@ public class HttpResponse {
     public HttpResponse(HttpStatusCode status, Map<String, String> header) {
         this.status = status;
         this.header.putAll(header);
+    }
+
+    public HttpResponse(HttpStatusCode status, String body){
+        this.status = status;
+        this.body = body.getBytes(StandardCharsets.UTF_8);
     }
 
     public HttpResponse(HttpStatusCode status, Map<String, String> header, byte[] body) {

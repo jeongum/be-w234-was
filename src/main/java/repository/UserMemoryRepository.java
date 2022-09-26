@@ -1,8 +1,9 @@
 package repository;
 
+import exception.UserException;
+import exception.UserExceptionMessage;
 import model.User;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public User save(User user) {
         if (users.containsKey(user.getUserId())) {
-            throw new InvalidParameterException("이미 존재하는 회원입니다.");
+            throw new UserException(UserExceptionMessage.DUPLICATE_USER);
         }
         users.put(user.getUserId(), user);
         return user;
@@ -35,7 +36,10 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public Optional<User> findById(String userId) {
         User user = users.get(userId);
-        return Optional.ofNullable(user);
+        if (user == null) {
+            throw new UserException(UserExceptionMessage.USER_NOT_FOUND);
+        }
+        return Optional.of(user);
     }
 
     @Override

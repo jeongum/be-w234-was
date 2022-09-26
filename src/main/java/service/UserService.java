@@ -1,10 +1,11 @@
 package service;
 
+import exception.UserException;
+import exception.UserExceptionMessage;
 import model.User;
 import repository.UserMemoryRepository;
 import repository.UserRepository;
 
-import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +23,7 @@ public class UserService {
     }
 
     public User createUser(Map<String, String> body) {
-        if (!validCreateData(body)) {
-            throw new InvalidParameterException();
-        }
+        validCreateData(body);
 
         User user = new User(body.get("userId"), body.get("password"), body.get("name"), body.get("email"));
         userRepository.save(user);
@@ -33,24 +32,26 @@ public class UserService {
     }
 
     public boolean login(Map<String, String> body) {
-        if (!validLoginData(body)) {
-            throw new InvalidParameterException();
-        }
+        validLoginData(body);
 
-        User user = userRepository.findById(body.get("userId")).orElseThrow(InvalidParameterException::new);
+        User user = userRepository.findById(body.get("userId")).get();
 
         return user.getPassword().equals(body.get("password"));
     }
 
-    public List<User> list(){
+    public List<User> list() {
         return userRepository.findAll();
     }
 
-    private boolean validLoginData(Map<String, String> body) {
-        return body.containsKey("userId") && body.containsKey("password");
+    private void validLoginData(Map<String, String> body) {
+        if (!(body.containsKey("userId") && body.containsKey("password"))) {
+            throw new UserException(UserExceptionMessage.INVALID_USER_PARAMETER);
+        }
     }
 
-    private boolean validCreateData(Map<String, String> body) {
-        return body.containsKey("userId") && body.containsKey("password") && body.containsKey("name") && body.containsKey("email");
+    private void validCreateData(Map<String, String> body) {
+        if (!(body.containsKey("userId") && body.containsKey("password") && body.containsKey("name") && body.containsKey("email"))) {
+            throw new UserException(UserExceptionMessage.INVALID_USER_PARAMETER);
+        }
     }
 }

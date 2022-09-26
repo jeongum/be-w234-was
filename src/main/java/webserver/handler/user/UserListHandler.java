@@ -48,10 +48,10 @@ public class UserListHandler implements Handler {
 
     private String generateUserTable(List<User> users) {
         StringBuilder sb = new StringBuilder();
-        IntStream.range(1, users.size() + 1).forEach(i -> {
+        IntStream.range(0, users.size()).forEach(i -> {
             User u = users.get(i);
             sb.append("<tr>");
-            sb.append("<th scope=\"row\">").append(i).append("</th>");
+            sb.append("<th scope=\"row\">").append(i+1).append("</th>");
             sb.append("<td>").append(u.getUserId()).append("</td>");
             sb.append("<td>").append(u.getName()).append("</td>");
             sb.append("<td>").append(u.getEmail()).append("</td>");
