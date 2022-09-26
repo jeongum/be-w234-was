@@ -30,8 +30,7 @@ public class UserListHandler implements Handler {
             byte[] body = makeUserListHtml(users);
             return new HttpResponse(HttpStatusCode.OK, header, body);
         }
-        header.put("location", Path.HTTP + request.getHeader().get("Host") + Path.LOGIN);
-        return new HttpResponse(HttpStatusCode.FOUND, header);
+        return new HttpResponse(HttpStatusCode.FOUND, HttpResponse.generateLocationHeader(request.getHeader().get("Host"), Path.LOGIN));
     }
 
     private boolean isLogin(Map<String, String> cookie) {
