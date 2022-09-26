@@ -13,4 +13,8 @@ public class ByteArrayUtils {
         }
         return out.toByteArray();
     }
+
+    public static byte[] stringToByteArray(String str){
+        return str.getBytes();
+    }
 }

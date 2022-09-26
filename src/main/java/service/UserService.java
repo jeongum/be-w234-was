@@ -1,11 +1,8 @@
 package service;
 
-import constant.Path;
 import model.User;
 import repository.UserMemoryRepository;
 import repository.UserRepository;
-import util.ByteArrayUtils;
-import util.FileUtils;
 
 import java.security.InvalidParameterException;
 import java.util.List;
@@ -42,49 +39,18 @@ public class UserService {
 
         User user = userRepository.findById(body.get("userId")).orElseThrow(InvalidParameterException::new);
 
-        return (user.getPassword().equals(body.get("password"))) ? true : false;
+        return user.getPassword().equals(body.get("password"));
     }
 
-    public byte[] list() {
-        byte[] header = FileUtils.getContents(Path.USER_LIST_HEADER);
-        byte[] footer = FileUtils.getContents(Path.USER_LIST_FOOTER);
-        byte[] content = generateUserList();
-
-        return ByteArrayUtils.concat(header, content, footer);
-    }
-
-    public byte[] generateUserList() {
-        List<User> users = userRepository.findAll();
-        int idx = 1;
-        StringBuilder sb = new StringBuilder();
-        for (User u : users) {
-            sb.append(generateUserListRow(u, idx++));
-        }
-        return sb.toString().getBytes();
-    }
-
-    private StringBuilder generateUserListRow(User u, int idx) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("<tr>");
-        sb.append("<th scope=\"row\">" + idx + "</th>");
-        sb.append("<td>" + u.getUserId() + "</td>");
-        sb.append("<td>" + u.getName() + "</td>");
-        sb.append("<td>" + u.getEmail() + "</td>");
-        sb.append("</tr>");
-        return sb;
+    public List<User> list(){
+        return userRepository.findAll();
     }
 
     private boolean validLoginData(Map<String, String> body) {
-        if (!body.containsKey("userId") || !body.containsKey("password")) {
-            return false;
-        }
-        return true;
+        return body.containsKey("userId") && body.containsKey("password");
     }
 
     private boolean validCreateData(Map<String, String> body) {
-        if (!body.containsKey("userId") || !body.containsKey("password") || !body.containsKey("name") || !body.containsKey("email")) {
-            return false;
-        }
-        return true;
+        return body.containsKey("userId") && body.containsKey("password") && body.containsKey("name") && body.containsKey("email");
     }
 }
