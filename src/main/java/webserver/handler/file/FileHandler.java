@@ -7,9 +7,6 @@ import webserver.http.request.HttpRequest;
 import webserver.http.response.HttpResponse;
 import webserver.http.response.HttpStatusCode;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,8 +19,7 @@ public class FileHandler implements Handler {
         byte[] body = FileUtils.getContents(request.getPath());
 
         if (body == null) {
-            header.put("location", "http://" + request.getHeader().get("Host") + Path.HOME);
-            return new HttpResponse(HttpStatusCode.FOUND, header);
+            return new HttpResponse(HttpStatusCode.FOUND, HttpResponse.generateLocationHeader(request.getHeader().get("Host"), Path.HOME));
         }
 
         header.put("mime", request.getMime().getValue());

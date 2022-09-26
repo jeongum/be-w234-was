@@ -1,5 +1,6 @@
 package util;
 
+import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import webserver.http.MIME;
 import webserver.http.request.HttpMethod;
@@ -25,7 +26,7 @@ public class HttpRequestParser {
         String[] url = firstLine[1].split("\\?");
         String path = url[0];
         if (url.length > 1) {
-            parameter = parseKeyValue(url[1]);
+            parameter = generateParameterMap(url[1]);
         }
         MIME mime = MIME.getMIMEFromPath(path);
 
@@ -34,7 +35,7 @@ public class HttpRequestParser {
         String line;
         while (true) {
             line = br.readLine();
-            if (line == null || "".equals(line)) break;
+            if (Strings.isNullOrEmpty(line)) break;
             HttpRequestUtils.Pair pair = generateHeaderPair(line);
             if ("Cookie".equals(pair.getKey())) {
                 cookie = HttpRequestUtils.parseCookies(pair.getValue());
@@ -46,14 +47,14 @@ public class HttpRequestParser {
         // Set Body
         if (header.containsKey("Content-Length")) {
             String bodyStr = IOUtils.readData(br, Integer.parseInt(header.get("Content-Length")));
-            body = parseKeyValue(bodyStr);
+            body = generateParameterMap(bodyStr);
         }
 
         return new HttpRequest(method, path, mime, header, body, parameter, cookie);
     }
 
-    private static Map<String, String> parseKeyValue(String string) {
-        return HttpRequestUtils.parseQueryString(string);
+    private static Map<String, String> generateParameterMap(String queryString) {
+        return HttpRequestUtils.parseQueryString(queryString);
     }
 
     private static HttpRequestUtils.Pair generateHeaderPair(String line) {
