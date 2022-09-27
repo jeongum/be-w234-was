@@ -3,8 +3,11 @@ package webserver;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import model.emf.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.persistence.Persistence;
 
 public class WebServer {
     private static final Logger logger = LoggerFactory.getLogger(WebServer.class);
@@ -22,6 +25,8 @@ public class WebServer {
         try (ServerSocket listenSocket = new ServerSocket(port)) {
             logger.info("Web Application Server started {} port.", port);
 
+            EntityManagerFactory.emf = Persistence.createEntityManagerFactory("java-was-2022");
+
             // 클라이언트가 연결될때까지 대기한다.
             Socket connection;
             while ((connection = listenSocket.accept()) != null) {
@@ -29,6 +34,8 @@ public class WebServer {
                 //thread.run();
                 thread.start();
             }
+
+            EntityManagerFactory.emf.close();
         }
     }
 }

@@ -81,22 +81,6 @@ class UserServiceTest {
         assertFalse(login);
     }
 
-    @Test
-    @DisplayName("유저 목록 리스트를 생성한다.")
-    void generateUserList(){
-        // given
-        saveUser();
-
-        // when
-        byte[] userListByte = userService.generateUserList();
-
-        // then
-        String userList = new String(userListByte);
-        assertTrue(userList.contains("userId"));
-        assertTrue(userList.contains("name"));
-        assertTrue(userList.contains("email"));
-    }
-
     private void saveUser() {
         userRepository.save(new User("userId", "password", "name", "email"));
     }
