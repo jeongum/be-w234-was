@@ -1,8 +1,10 @@
 package service;
 
+import exception.UserException;
 import model.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import repository.UserDBRepository;
 import repository.UserMemoryRepository;
 import repository.UserRepository;
 
@@ -15,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserServiceTest {
 
     private UserService userService = UserService.getInstance();
-    private UserRepository userRepository = UserMemoryRepository.getInstance();
+    private UserRepository userRepository = UserDBRepository.getInstance();
 
     @Test
     @DisplayName("맵 데이터로 유저를 생성한다.")
@@ -44,7 +46,7 @@ class UserServiceTest {
         params.put("name", "name");
 
         // when then
-        assertThrows(InvalidParameterException.class, () ->{
+        assertThrows(UserException.class, () ->{
             userService.createUser(params);
         });
     }
@@ -59,10 +61,10 @@ class UserServiceTest {
         params.put("password", "password");
 
         // when
-        boolean login = userService.login(params);
+        String login = userService.login(params);
 
         // then
-        assertTrue(login);
+        assertEquals("userId", login);
     }
 
     @Test
@@ -75,26 +77,10 @@ class UserServiceTest {
         params.put("password", "wrongPW");
 
         // when
-        boolean login = userService.login(params);
+        String login = userService.login(params);
 
         // then
-        assertFalse(login);
-    }
-
-    @Test
-    @DisplayName("유저 목록 리스트를 생성한다.")
-    void generateUserList(){
-        // given
-        saveUser();
-
-        // when
-        byte[] userListByte = userService.generateUserList();
-
-        // then
-        String userList = new String(userListByte);
-        assertTrue(userList.contains("userId"));
-        assertTrue(userList.contains("name"));
-        assertTrue(userList.contains("email"));
+        assertNull(login);
     }
 
     private void saveUser() {

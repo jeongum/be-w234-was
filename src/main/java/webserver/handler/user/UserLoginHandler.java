@@ -17,9 +17,9 @@ public class UserLoginHandler implements Handler {
     @Override
     public HttpResponse handle(HttpRequest request) {
         try {
-            boolean login = userService.login(request.getBody());
-            String location = (login) ? Path.HOME : Path.LOGIN_FAILED;
-            return new HttpResponse(HttpStatusCode.FOUND, HttpResponse.generateLocationHeader(request.getHeader().get("Host"), location), HttpResponse.generateLoginCookie(login));
+            String loginUser = userService.login(request.getBody());
+            String location = (loginUser != null) ? Path.HOME : Path.LOGIN_FAILED;
+            return new HttpResponse(HttpStatusCode.FOUND, HttpResponse.generateLocationHeader(request.getHeader().get("Host"), location), HttpResponse.generateLoginCookie(loginUser));
         } catch (UserException e) {
             return new HttpResponse(HttpStatusCode.BAD_REQUEST, e.getMessage());
         }

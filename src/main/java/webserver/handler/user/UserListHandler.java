@@ -23,19 +23,16 @@ public class UserListHandler implements Handler {
 
     @Override
     public HttpResponse handle(HttpRequest request) {
-        Map<String, String> header = new HashMap<>();
-        if (isLogin(request.getCookie())) {
-            header.put("mime", request.getMime().getValue());
+        if (request.isLogin()) {
+            Map<String, String> header = new HashMap<>();
+
             List<User> users = userService.list();
+
+            header.put("mime", request.getMime().getValue());
             byte[] body = makeUserListHtml(users);
             return new HttpResponse(HttpStatusCode.OK, header, body);
         }
         return new HttpResponse(HttpStatusCode.FOUND, HttpResponse.generateLocationHeader(request.getHeader().get("Host"), Path.LOGIN));
-    }
-
-    private boolean isLogin(Map<String, String> cookie) {
-        String login = cookie.getOrDefault("logined", String.valueOf(false));
-        return login.equals("true");
     }
 
     private byte[] makeUserListHtml(List<User> users) {
@@ -51,7 +48,7 @@ public class UserListHandler implements Handler {
         IntStream.range(0, users.size()).forEach(i -> {
             User u = users.get(i);
             sb.append("<tr>");
-            sb.append("<th scope=\"row\">").append(i+1).append("</th>");
+            sb.append("<th scope=\"row\">").append(i + 1).append("</th>");
             sb.append("<td>").append(u.getUserId()).append("</td>");
             sb.append("<td>").append(u.getName()).append("</td>");
             sb.append("<td>").append(u.getEmail()).append("</td>");

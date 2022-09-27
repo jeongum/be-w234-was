@@ -84,9 +84,14 @@ public class HttpResponse {
         return header;
     }
 
-    public static Map<String, String> generateLoginCookie(Boolean login){
+    public static Map<String, String> generateLoginCookie(String loginUser){
         Map<String, String> cookie = new HashMap<>();
-        cookie.put("logined", String.valueOf(login));
+        if(loginUser == null){
+            cookie.put("logined", "false");
+        } else {
+            cookie.put("logined", "true");
+            cookie.put("userId", loginUser);
+        }
         return cookie;
     }
 }

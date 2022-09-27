@@ -3,7 +3,7 @@ package service;
 import exception.UserException;
 import exception.UserExceptionMessage;
 import model.User;
-import repository.UserMemoryRepository;
+import repository.UserDBRepository;
 import repository.UserRepository;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class UserService {
     private static UserService instance = new UserService();
 
     private UserService() {
-        userRepository = UserMemoryRepository.getInstance();
+        userRepository = UserDBRepository.getInstance();
     }
 
     public static UserService getInstance() {
@@ -31,12 +31,12 @@ public class UserService {
         return user;
     }
 
-    public boolean login(Map<String, String> body) {
+    public String login(Map<String, String> body) {
         validLoginData(body);
 
         User user = userRepository.findById(body.get("userId")).get();
 
-        return user.getPassword().equals(body.get("password"));
+        return (user.getPassword().equals(body.get("password"))) ? user.getUserId() : null;
     }
 
     public List<User> list() {
