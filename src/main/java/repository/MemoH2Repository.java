@@ -1,17 +1,20 @@
 package repository;
 
 import model.Memo;
-import model.emf.EntityManagerFactory;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.List;
 
 public class MemoH2Repository implements MemoRepository {
+    private EntityManagerFactory emf;
     private EntityManager em;
     private static MemoH2Repository instance = new MemoH2Repository();
 
     private MemoH2Repository() {
+        this.emf = Persistence.createEntityManagerFactory("java-was-2022");
     }
 
     public static MemoH2Repository getInstance() {
@@ -19,7 +22,7 @@ public class MemoH2Repository implements MemoRepository {
     }
 
     @Override
-    public void save(Memo memo) {
+    public Memo save(Memo memo) {
         createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -34,6 +37,8 @@ public class MemoH2Repository implements MemoRepository {
         } finally {
             closeEntityManager();
         }
+
+        return memo;
     }
 
     @Override
@@ -51,6 +56,6 @@ public class MemoH2Repository implements MemoRepository {
     }
 
     private void createEntityManager() {
-        em = EntityManagerFactory.emf.createEntityManager();
+        em = emf.createEntityManager();
     }
 }

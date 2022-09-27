@@ -3,8 +3,10 @@ package repository;
 import model.Memo;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MemoRepository {
-    public void save(Memo memo);
-    public List<Memo> findAll();
+    Memo save(Memo memo);
+
+    List<Memo> findAll();
 }
