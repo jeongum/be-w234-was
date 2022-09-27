@@ -8,16 +8,16 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.List;
 
-public class MemoH2Repository implements MemoRepository {
+public class MemoDBRepository implements MemoRepository {
     private EntityManagerFactory emf;
     private EntityManager em;
-    private static MemoH2Repository instance = new MemoH2Repository();
+    private static MemoDBRepository instance = new MemoDBRepository();
 
-    private MemoH2Repository() {
+    private MemoDBRepository() {
         this.emf = Persistence.createEntityManagerFactory("java-was-2022");
     }
 
-    public static MemoH2Repository getInstance() {
+    public static MemoDBRepository getInstance() {
         return instance;
     }
 
