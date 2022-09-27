@@ -3,7 +3,7 @@ package service;
 import exception.UserException;
 import exception.UserExceptionMessage;
 import model.User;
-import repository.UserMemoryRepository;
+import repository.UserDBRepository;
 import repository.UserRepository;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class UserService {
     private static UserService instance = new UserService();
 
     private UserService() {
-        userRepository = UserMemoryRepository.getInstance();
+        userRepository = UserDBRepository.getInstance();
     }
 
     public static UserService getInstance() {

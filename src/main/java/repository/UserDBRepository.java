@@ -1,5 +1,7 @@
 package repository;
 
+import exception.UserException;
+import exception.UserExceptionMessage;
 import model.User;
 
 import javax.persistence.*;
@@ -30,8 +32,8 @@ public class UserDBRepository implements UserRepository {
 
             tx.commit();
         } catch (Exception e) {
-            e.printStackTrace();
             tx.rollback();
+            throw new UserException(UserExceptionMessage.DUPLICATE_USER);
         } finally {
             closeEntityManager();
         }
@@ -44,6 +46,7 @@ public class UserDBRepository implements UserRepository {
         createEntityManager();
 
         User user = em.find(User.class, userId);
+        if (user == null) throw new UserException(UserExceptionMessage.USER_NOT_FOUND);
 
         closeEntityManager();
         return Optional.of(user);
