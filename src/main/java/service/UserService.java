@@ -31,12 +31,12 @@ public class UserService {
         return user;
     }
 
-    public boolean login(Map<String, String> body) {
+    public String login(Map<String, String> body) {
         validLoginData(body);
 
         User user = userRepository.findById(body.get("userId")).get();
 
-        return user.getPassword().equals(body.get("password"));
+        return (user.getPassword().equals(body.get("password"))) ? user.getUserId() : null;
     }
 
     public List<User> list() {

@@ -61,10 +61,10 @@ class UserServiceTest {
         params.put("password", "password");
 
         // when
-        boolean login = userService.login(params);
+        String login = userService.login(params);
 
         // then
-        assertTrue(login);
+        assertEquals("userId", login);
     }
 
     @Test
@@ -77,10 +77,10 @@ class UserServiceTest {
         params.put("password", "wrongPW");
 
         // when
-        boolean login = userService.login(params);
+        String login = userService.login(params);
 
         // then
-        assertFalse(login);
+        assertNull(login);
     }
 
     private void saveUser() {
