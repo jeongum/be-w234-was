@@ -28,6 +28,8 @@ public class MemoService {
     }
 
     public Memo create(String userId, Map<String, String> body) {
+        validCreateDate(body);
+
         User user = userRepository.findById(userId).orElseThrow(() -> new MemoException(MemoExceptionMessage.MEMO_CREATE_ERROR));
         Memo memo = Memo.builder().author(user.getName()).contents(body.get("contents")).build();
 
@@ -38,5 +40,11 @@ public class MemoService {
 
     public List<Memo> list() {
         return memoRepository.findAll();
+    }
+
+    private void validCreateDate(Map<String, String> body) {
+        if(!(body.containsKey("contents"))){
+            throw new MemoException(MemoExceptionMessage.INVALID_MEMO_PARAMETER);
+        }
     }
 }

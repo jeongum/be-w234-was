@@ -34,14 +34,15 @@ class MemoDBRepositoryTest {
     @Test
     void findAll() {
         // given
+        int originSize = memoRepository.findAll().size();
         memoRepository.save(memo);
 
         // when
         List<Memo> memos = memoRepository.findAll();
 
         // then
-        assertEquals(2, memos.size());
-        assertEquals("author", memos.get(0).getAuthor());
+        assertEquals(originSize + 1, memos.size());
+        assertEquals("author", memos.get(memos.size() - 1).getAuthor());
     }
 
 }
