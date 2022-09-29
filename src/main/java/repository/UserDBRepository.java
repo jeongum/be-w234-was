@@ -46,10 +46,9 @@ public class UserDBRepository implements UserRepository {
         createEntityManager();
 
         User user = em.find(User.class, userId);
-        if (user == null) throw new UserException(UserExceptionMessage.USER_NOT_FOUND);
 
         closeEntityManager();
-        return Optional.of(user);
+        return Optional.ofNullable(user);
     }
 
     @Override

@@ -34,6 +34,7 @@ public class UserService {
     public String login(Map<String, String> body) {
         validLoginData(body);
 
+        if (userRepository.findById(body.get("userId")).isEmpty()) return null;
         User user = userRepository.findById(body.get("userId")).get();
 
         return (user.getPassword().equals(body.get("password"))) ? user.getUserId() : null;

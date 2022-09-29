@@ -11,6 +11,7 @@ import repository.UserRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class MemoService {
     private MemoRepository memoRepository;
@@ -27,7 +28,7 @@ public class MemoService {
     }
 
     public Memo create(String userId, Map<String, String> body) {
-        User user = userRepository.findById(userId).get();
+        User user = userRepository.findById(userId).orElseThrow(() -> new MemoException(MemoExceptionMessage.MEMO_CREATE_ERROR));
         Memo memo = Memo.builder().author(user.getName()).contents(body.get("contents")).build();
 
         memoRepository.save(memo);
