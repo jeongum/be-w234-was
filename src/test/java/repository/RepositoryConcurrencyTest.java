@@ -32,7 +32,7 @@ class RepositoryConcurrencyTest {
         }
         latch.await();
 
-        assertEquals(1000, HashMapUsers.size());
+        assertNotEquals(1000, HashMapUsers.size());
     }
 
     @Test

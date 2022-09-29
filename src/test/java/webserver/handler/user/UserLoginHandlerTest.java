@@ -5,6 +5,7 @@ import model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import repository.UserDBRepository;
 import repository.UserMemoryRepository;
 import repository.UserRepository;
 import util.HttpRequestParser;
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserLoginHandlerTest {
 
     private UserLoginHandler userLoginHandler = new UserLoginHandler();
-    private UserRepository userRepository = UserMemoryRepository.getInstance();
+    private UserRepository userRepository = UserDBRepository.getInstance();
 
     @BeforeEach
     void setUp() {

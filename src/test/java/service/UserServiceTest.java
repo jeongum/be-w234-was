@@ -11,6 +11,7 @@ import repository.UserRepository;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,12 +20,14 @@ class UserServiceTest {
     private UserService userService = UserService.getInstance();
     private UserRepository userRepository = UserDBRepository.getInstance();
 
+    private User user;
+
     @Test
     @DisplayName("맵 데이터로 유저를 생성한다.")
     void createUser() {
         // given
         Map<String, String> params = new HashMap<>();
-        params.put("userId", "userId");
+        params.put("userId", UUID.randomUUID().toString());
         params.put("password", "password");
         params.put("name", "name");
         params.put("email", "email");
@@ -57,14 +60,14 @@ class UserServiceTest {
         // given
         saveUser();
         Map<String, String> params = new HashMap<>();
-        params.put("userId", "userId");
+        params.put("userId", user.getUserId());
         params.put("password", "password");
 
         // when
         String login = userService.login(params);
 
         // then
-        assertEquals("userId", login);
+        assertEquals(user.getUserId(), login);
     }
 
     @Test
@@ -73,7 +76,7 @@ class UserServiceTest {
         // given
         saveUser();
         Map<String, String> params = new HashMap<>();
-        params.put("userId", "userId");
+        params.put("userId", user.getUserId());
         params.put("password", "wrongPW");
 
         // when
@@ -84,6 +87,6 @@ class UserServiceTest {
     }
 
     private void saveUser() {
-        userRepository.save(new User("userId", "password", "name", "email"));
+        user = userRepository.save(new User(UUID.randomUUID().toString(), "password", "name", "email"));
     }
 }

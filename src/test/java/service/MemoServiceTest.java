@@ -13,6 +13,7 @@ import repository.UserRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,12 +47,12 @@ class MemoServiceTest {
     void createWithException() {
         // given
         Map<String, String> body = new HashMap<>();
-        User user = User.builder().userId("userId").name("name").build();
+        User user = User.builder().userId(UUID.randomUUID().toString()).name("name").build();
         userRepository.save(user);
 
         // when
         // then
-        assertThrows(MemoException.class, () -> memoService.create("userId", body));
+        assertThrows(MemoException.class, () -> memoService.create(user.getUserId(), body));
     }
 
     @Test

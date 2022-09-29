@@ -1,6 +1,7 @@
 package webserver.handler.user;
 
 import constant.Path;
+import exception.UserExceptionMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import webserver.http.response.HttpResponse;
 import webserver.http.response.HttpStatusCode;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -63,7 +65,7 @@ class UserCreateHandlerTest {
         HttpResponse response = userCreateHandler.handle(request);
 
         // then
-        assertEquals(HttpStatusCode.FOUND, response.getStatus());
-        assertEquals("http://" + request.getHeader().get("Host") + Path.JOIN, response.getHeader().get("location"));
+        assertEquals(HttpStatusCode.BAD_REQUEST, response.getStatus());
+        assertEquals(UserExceptionMessage.INVALID_USER_PARAMETER.getMessage(), new String(response.getBody()));
     }
 }
