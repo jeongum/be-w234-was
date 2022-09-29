@@ -12,7 +12,6 @@ public class MemoDBRepository implements MemoRepository {
     private static MemoDBRepository instance = new MemoDBRepository();
 
     private MemoDBRepository() {
-
     }
 
     public static MemoDBRepository getInstance() {

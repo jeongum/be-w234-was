@@ -57,7 +57,7 @@ public class UserDBRepository implements UserRepository {
         try {
             tx.begin();
 
-            em.createQuery("delete from User u", User.class);
+            em.createQuery("delete from User u").executeUpdate();
 
             tx.commit();
         } catch (Exception e) {
@@ -70,8 +70,12 @@ public class UserDBRepository implements UserRepository {
 
     @Override
     public int count() {
-        Query query = em.createQuery("select count(u) from User u", User.class);
-        return Integer.parseInt(query.getSingleResult().toString());
+        createEntityManager();
+
+        String countStr = em.createQuery("select count(u) from User u").getSingleResult().toString();
+
+        closeEntityManager();
+        return Integer.parseInt(countStr);
     }
 
     @Override
