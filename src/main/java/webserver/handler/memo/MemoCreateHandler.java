@@ -2,12 +2,17 @@ package webserver.handler.memo;
 
 import constant.Path;
 import exception.MemoException;
+import exception.MemoExceptionMessage;
 import exception.UserException;
 import service.MemoService;
+import util.DtoConverter;
 import webserver.handler.Handler;
+import webserver.handler.dto.MemoCreateDto;
 import webserver.http.request.HttpRequest;
 import webserver.http.response.HttpResponse;
 import webserver.http.response.HttpStatusCode;
+
+import java.util.Map;
 
 public class MemoCreateHandler implements Handler {
 
@@ -17,9 +22,10 @@ public class MemoCreateHandler implements Handler {
     public HttpResponse handle(HttpRequest request) {
         if (request.isLogin()) {
             try {
-                memoService.create(request.getCookie().get("userId"), request.getBody());
+                MemoCreateDto dto = DtoConverter.convertMemoCreate(request.getBody());
+                memoService.create(request.getCookie().get("userId"), dto);
                 return new HttpResponse(HttpStatusCode.FOUND, HttpResponse.generateLocationHeader(request.getHeader().get("Host"), Path.MEMO_LIST));
-            } catch (UserException | MemoException e) {
+            } catch (MemoException e) {
                 return new HttpResponse(HttpStatusCode.BAD_REQUEST, e.getMessage());
             }
         }

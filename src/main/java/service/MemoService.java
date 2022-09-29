@@ -8,6 +8,7 @@ import repository.MemoDBRepository;
 import repository.MemoRepository;
 import repository.UserDBRepository;
 import repository.UserRepository;
+import webserver.handler.dto.MemoCreateDto;
 
 import java.util.List;
 import java.util.Map;
@@ -27,11 +28,9 @@ public class MemoService {
         return instance;
     }
 
-    public Memo create(String userId, Map<String, String> body) {
-        validCreateDate(body);
-
+    public Memo create(String userId, MemoCreateDto dto) {
         User user = userRepository.findById(userId).orElseThrow(() -> new MemoException(MemoExceptionMessage.MEMO_CREATE_ERROR));
-        Memo memo = Memo.builder().author(user.getName()).contents(body.get("contents")).build();
+        Memo memo = Memo.builder().author(user.getName()).contents(dto.getContents()).build();
 
         memoRepository.save(memo);
 
@@ -40,11 +39,5 @@ public class MemoService {
 
     public List<Memo> list() {
         return memoRepository.findAll();
-    }
-
-    private void validCreateDate(Map<String, String> body) {
-        if(!(body.containsKey("contents"))){
-            throw new MemoException(MemoExceptionMessage.INVALID_MEMO_PARAMETER);
-        }
     }
 }

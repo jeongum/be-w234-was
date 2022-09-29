@@ -9,6 +9,7 @@ import repository.MemoDBRepository;
 import repository.MemoRepository;
 import repository.UserDBRepository;
 import repository.UserRepository;
+import webserver.handler.dto.MemoCreateDto;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,32 +28,18 @@ class MemoServiceTest {
     @DisplayName("userId에 매핑되는 유저를 불러와 메모를 생성한다.")
     void create() {
         // given
-        Map<String, String> body = new HashMap<>();
-        body.put("contents", "contents");
+        MemoCreateDto dto = MemoCreateDto.builder().contents("contents").build();
         User user = User.builder().userId("userId").name("name").build();
         userRepository.save(user);
 
         // when
-        Memo memo = memoService.create("userId", body);
+        Memo memo = memoService.create("userId", dto);
 
         // then
         assertNotNull(memo.getId());
         assertNotNull(memo.getCreateDate());
         assertEquals(user.getName(), memo.getAuthor());
         assertNotNull("contents", memo.getContents());
-    }
-
-    @Test
-    @DisplayName("Invalid Parameter로 메모 생성에 실패한다.")
-    void createWithException() {
-        // given
-        Map<String, String> body = new HashMap<>();
-        User user = User.builder().userId(UUID.randomUUID().toString()).name("name").build();
-        userRepository.save(user);
-
-        // when
-        // then
-        assertThrows(MemoException.class, () -> memoService.create(user.getUserId(), body));
     }
 
     @Test

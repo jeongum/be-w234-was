@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import repository.UserDBRepository;
 import repository.UserMemoryRepository;
 import repository.UserRepository;
+import webserver.handler.dto.UserCreateDto;
+import webserver.handler.dto.UserLoginDto;
 
 import java.security.InvalidParameterException;
 import java.util.HashMap;
@@ -26,32 +28,18 @@ class UserServiceTest {
     @DisplayName("맵 데이터로 유저를 생성한다.")
     void createUser() {
         // given
-        Map<String, String> params = new HashMap<>();
-        params.put("userId", UUID.randomUUID().toString());
-        params.put("password", "password");
-        params.put("name", "name");
-        params.put("email", "email");
+        UserCreateDto dto = UserCreateDto.builder()
+                .userId(UUID.randomUUID().toString())
+                .password("password")
+                .name("name")
+                .email("email")
+                .build();
 
         // when
-        User user = userService.createUser(params);
+        User user = userService.createUser(dto);
 
         // then
         assertEquals(user.getName(), "name");
-    }
-
-    @Test
-    @DisplayName("맵 데이터가 없을 시, InvalidParameterException을 리턴한다.")
-    void createUserWithException() {
-        // given
-        Map<String, String> params = new HashMap<>();
-        params.put("userId", "userId");
-        params.put("password", "password");
-        params.put("name", "name");
-
-        // when then
-        assertThrows(UserException.class, () ->{
-            userService.createUser(params);
-        });
     }
 
     @Test
@@ -59,31 +47,16 @@ class UserServiceTest {
     void login() {
         // given
         saveUser();
-        Map<String, String> params = new HashMap<>();
-        params.put("userId", user.getUserId());
-        params.put("password", "password");
+        UserLoginDto dto = UserLoginDto.builder()
+                .userId(user.getUserId())
+                .password("password")
+                .build();
 
         // when
-        String login = userService.login(params);
+        String login = userService.login(dto);
 
         // then
         assertEquals(user.getUserId(), login);
-    }
-
-    @Test
-    @DisplayName("올바르지 않은 비밀번호로 로그인에 실패한다.")
-    void loginWithWrongPW() {
-        // given
-        saveUser();
-        Map<String, String> params = new HashMap<>();
-        params.put("userId", user.getUserId());
-        params.put("password", "wrongPW");
-
-        // when
-        String login = userService.login(params);
-
-        // then
-        assertNull(login);
     }
 
     private void saveUser() {

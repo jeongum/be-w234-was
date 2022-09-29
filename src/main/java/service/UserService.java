@@ -5,6 +5,8 @@ import exception.UserExceptionMessage;
 import model.User;
 import repository.UserDBRepository;
 import repository.UserRepository;
+import webserver.handler.dto.UserCreateDto;
+import webserver.handler.dto.UserLoginDto;
 
 import java.util.List;
 import java.util.Map;
@@ -22,22 +24,19 @@ public class UserService {
         return instance;
     }
 
-    public User createUser(Map<String, String> body) {
-        validCreateData(body);
-
-        User user = new User(body.get("userId"), body.get("password"), body.get("name"), body.get("email"));
+    public User createUser(UserCreateDto dto) {
+        User user = new User(dto.getUserId(), dto.getPassword(), dto.getName(), dto.getEmail());
         userRepository.save(user);
 
         return user;
     }
 
-    public String login(Map<String, String> body) {
-        validLoginData(body);
+    public String login(UserLoginDto dto) {
+        if (userRepository.findById(dto.getUserId()).isEmpty()) return null;
 
-        if (userRepository.findById(body.get("userId")).isEmpty()) return null;
-        User user = userRepository.findById(body.get("userId")).get();
+        User user = userRepository.findById(dto.getUserId()).get();
 
-        return (user.getPassword().equals(body.get("password"))) ? user.getUserId() : null;
+        return (user.getPassword().equals(dto.getPassword())) ? user.getUserId() : null;
     }
 
     public List<User> list() {
