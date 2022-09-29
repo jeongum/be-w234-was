@@ -1,20 +1,18 @@
 package repository;
 
 import model.Memo;
+import repository.factory.GlobalEntityMangerFactory;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import java.util.List;
 
 public class MemoDBRepository implements MemoRepository {
-    private EntityManagerFactory emf;
     private EntityManager em;
     private static MemoDBRepository instance = new MemoDBRepository();
 
     private MemoDBRepository() {
-        this.emf = Persistence.createEntityManagerFactory("java-was-2022");
+
     }
 
     public static MemoDBRepository getInstance() {
@@ -56,6 +54,6 @@ public class MemoDBRepository implements MemoRepository {
     }
 
     private void createEntityManager() {
-        em = emf.createEntityManager();
+        em = GlobalEntityMangerFactory.getInstance().getEmf().createEntityManager();
     }
 }

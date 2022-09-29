@@ -3,18 +3,17 @@ package repository;
 import exception.UserException;
 import exception.UserExceptionMessage;
 import model.User;
+import repository.factory.GlobalEntityMangerFactory;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 
 public class UserDBRepository implements UserRepository {
-    private EntityManagerFactory emf;
     private EntityManager em;
     private static UserDBRepository instance = new UserDBRepository();
 
     private UserDBRepository() {
-        this.emf = Persistence.createEntityManagerFactory("java-was-2022");
     }
 
     public static UserDBRepository getInstance() {
@@ -90,6 +89,6 @@ public class UserDBRepository implements UserRepository {
     }
 
     private void createEntityManager() {
-        em = emf.createEntityManager();
+        em = GlobalEntityMangerFactory.getInstance().getEmf().createEntityManager();
     }
 }
